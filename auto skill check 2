@@ -1,1 +1,12 @@
-local v0=player.PlayerGui:FindFirstChild("ScreenGui");if  not v0 then return;end local v1=v0:FindFirstChild("Menu");if  not v1 then return;end local v2=v1:FindFirstChild("SkillCheckFrame");if  not v2 then return;end local v3=1296 -(191 + 1100) ;local function v4() if v2.Visible then local v5=0 + 0 ;local v6;local v7;while true do if ((0 + 0)==v5) then v6=v2:FindFirstChild("Marker");v7=v2:FindFirstChild("GoldArea");v5=1 + 0 ;end if (v5==1) then if (v6 and v7) then local v8=v6.AbsolutePosition;local v9=v7.AbsolutePosition;local v10=v7.AbsoluteSize;if ((v8.X>=v9.X) and (v8.X<=(v9.X + v10.X + v3))) then VirtualInputManager:SendKeyEvent(true,Enum.KeyCode.Space,false,game);task.wait(877.1 -(282 + 595) );VirtualInputManager:SendKeyEvent(false,Enum.KeyCode.Space,false,game);end end break;end end end end
+--[[
+ .____                  ________ ___.    _____                           __                
+ |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
+ |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
+ |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
+ |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
+         \/          \/         \/    \/                \/     \/     \/                   
+          \_Welcome to LuaObfuscator.com   (Alpha 0.10.9) ~  Much Love, Ferib 
+
+]]--
+
+local v0=game.Players.LocalPlayer;local v1=v0.PlayerGui:FindFirstChild("ScreenGui");if  not v1 then return;end local v2=v1:FindFirstChild("Menu");if  not v2 then return;end local v3=v2:FindFirstChild("SkillCheckFrame");if  not v3 then return;end local v4=1 + 4 ;local function v5() if v3.Visible then local v6=v3:FindFirstChild("Marker");local v7=v3:FindFirstChild("GoldArea");if (v6 and v7) then local v8=v6.AbsolutePosition;local v9=v7.AbsolutePosition;local v10=v7.AbsoluteSize;if ((v8.X>=v9.X) and (v8.X<=(v9.X + v10.X + v4))) then local v11=1291 -(191 + 1100) ;while true do if ((0 + 0)==v11) then VirtualInputManager:SendKeyEvent(true,Enum.KeyCode.Space,false,game);task.wait(1637.1 -(1523 + 114) );v11=1 + 0 ;end if (v11==(1 -0)) then VirtualInputManager:SendKeyEvent(false,Enum.KeyCode.Space,false,game);break;end end end end end end
