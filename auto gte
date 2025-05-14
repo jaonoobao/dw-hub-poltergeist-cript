@@ -1,1 +1,2939 @@
-local v0=false;local v1=GeneralTab:CreateToggle({Name="🏃 Auto GTE",Description="Automatically teleports you to elevator when panic mode",CurrentValue=false,Callback=function(v2) v0=v2;if v0 then local v3=0;local v4;while true do if (v3==(1 -0)) then v4=nil;v4=game:GetService("RunService").Heartbeat:Connect(function() local v6=0 + 0 ;local v7;local v8;while true do if (v6==(2 -1)) then if  not v7 then return;end v8=v7:FindFirstChild("Panic");v6=1639 -(1523 + 114) ;end if (v6==(0 + 0)) then if  not v0 then local v9=0 -0 ;while true do if (v9==0) then v4:Disconnect();return;end end end v7=workspace:FindFirstChild("Info");v6=1 -0 ;end if (v6==(1067 -(68 + 997))) then if ( not v8 or  not v8:IsA("BoolValue")) then return;end if v8.Value then local v10=workspace:FindFirstChild("Elevators");if  not v10 then return;end local v11=v10:FindFirstChildWhichIsA("Model");if  not v11 then return;end local v12=v11:FindFirstChild("MonsterBlocker");if ( not v12 or  not v12:IsA("Part")) then return;end local v13=game.Players.LocalPlayer.Character;if  not v13 then return;end local v14=v13:FindFirstChild("HumanoidRootPart");if  not v14 then return;end v14.CFrame=v12.CFrame;end break;end end end);break;end if (v3==(1270 -(226 + 1044))) then sound(8486683243 -0 );Poltergeist:Notification({Title="Notification",Icon="notifications_active",ImageSource="Material",Content="Auto GTE has been activated"});v3=118 -(32 + 85) ;end end else local v5=0 + 0 ;while true do if (v5==(0 + 0)) then sound(17208362292 -(892 + 65) );Poltergeist:Notification({Title="Notification",Icon="notifications_active",ImageSource="Material",Content="Auto GTE has been deactivated"});break;end end end end});
+local WindUI = require("./src/init")
+
+
+local Window = WindUI:CreateWindow({
+    Title = "🐱Iriska Hub🐱", -- UI Title
+    Icon = "apple", -- Url or rbxassetid or lucide
+    Author = "hex233222| v1", -- Author & Creator
+    Folder = "CloudHub", -- Folder name for saving data (And key)
+    Size = UDim2.fromOffset(300, 300), -- UI Size
+    KeySystem = { -- Creates key system
+        Key = "IriskaIsCool", -- key
+        Note = "The Key is IriskaIsCool", -- Note
+        URL = "https://github.com/Footagesus/WindUI", -- URL To get key (example: Discord)
+        SaveKey = true, -- Saves the key in the folder specified above
+    }, 
+    Transparent = true,-- UI Transparency
+    Theme = "Dark", -- UI Theme
+    SideBarWidth = 170, -- UI Sidebar Width (number)
+    HasOutline = true, -- Adds Outlines to the window
+})
+
+-- Crear un botón para abrir la ventana
+Window:EditOpenButton({
+    Title = "Open Iriska Hub",
+    Icon = "folder-open",
+    Color = ColorSequence.new(
+        Color3.fromRGB(0, 0, 0), -- Color negro inicial
+        Color3.fromRGB(0, 0, 0)  -- Color negro final
+    )
+})
+
+
+-- Crear pestaña principal
+local MainTab = Window:Tab({
+    Title = "Main Tab",
+    Icon = "folder",
+}) 
+
+ 
+
+ 
+
+
+-- Crear pestaña Player Configs
+local Player = Window:Tab({
+    Title = "Player Configs Tab",
+    Icon = "folder-cog",
+})
+
+
+local Extra = Window:Tab({
+    Title = "Extras",
+    Icon = "folders",
+})
+
+Window:Divider()
+
+
+-- Crear pestaña Trolling
+local Trolling = Window:Tab({
+    Title = "Trolling Tab",
+    Icon = "folder-pen",
+})
+
+
+
+
+
+
+
+
+
+
+
+
+-- Crear sección
+local Section = MainTab:Section({ 
+    Title = "|--Esp Features--|",
+    TextXAlignment = "Center",
+    TextSize = 30,
+})
+
+
+
+
+
+
+
+-- Variables globales
+local highlightFillColor = Color3.fromRGB(255, 0, 0) -- Color inicial del Highlight
+local highlightOutlineColor = Color3.fromRGB(255, 255, 255) -- Color del contorno
+local selectedFont = Enum.Font.Arial -- Fuente inicial para los NameTags
+
+-- Toggle para activar/desactivar los Highlights y NameTags
+local Toggle = MainTab:Toggle({
+    Title = "Esp Twisteds",
+    Desc = "Toggles highlighting To Monsters",
+    Value = false,
+    Callback = function(state)
+        isEnabled = state
+
+        -- Función para manejar el Highlight y NameTag
+        local function updateMonsters()
+            local currentRoom = workspace:FindFirstChild("CurrentRoom")
+            if currentRoom then
+                for _, item in pairs(currentRoom:GetChildren()) do
+                    if item:IsA("Model") then
+                        local monstersFolder = item:FindFirstChild("Monsters")
+                        if monstersFolder then
+                            for _, monster in pairs(monstersFolder:GetChildren()) do
+                                if monster:IsA("Model") then
+                                    if isEnabled then
+                                        -- Agrega o actualiza Highlight
+                                        local highlight = monster:FindFirstChildOfClass("Highlight")
+                                        if not highlight then
+                                            highlight = Instance.new("Highlight")
+                                            highlight.Parent = monster
+                                        end
+                                        highlight.FillColor = highlightFillColor
+                                        highlight.OutlineColor = highlightOutlineColor
+                                        highlight.FillTransparency = 0.5
+
+                                        -- Agrega o actualiza NameTag
+                                        local nameTag = monster:FindFirstChild("NameTag")
+                                        if not nameTag then
+                                            local billboardGui = Instance.new("BillboardGui")
+                                            billboardGui.Name = "NameTag"
+                                            billboardGui.Parent = monster
+                                            billboardGui.Size = UDim2.new(8, 0, 2, 0)
+                                            billboardGui.AlwaysOnTop = true
+                                            billboardGui.MaxDistance = 2000
+
+                                            local textLabel = Instance.new("TextLabel")
+                                            textLabel.Parent = billboardGui
+                                            textLabel.Size = UDim2.new(1, 0, 1, 0)
+                                            textLabel.BackgroundTransparency = 1
+                                            textLabel.Text = monster.Name
+                                            textLabel.TextColor3 = Color3.new(1, 1, 1)
+                                            textLabel.Font = selectedFont
+                                        else
+                                            -- Actualiza fuente del NameTag
+                                            local textLabel = nameTag:FindFirstChildOfClass("TextLabel")
+                                            if textLabel then
+                                                textLabel.Font = selectedFont
+                                            end
+                                        end
+                                    else
+                                        -- Elimina Highlight y NameTag
+                                        local highlight = monster:FindFirstChildOfClass("Highlight")
+                                        if highlight then
+                                            highlight:Destroy()
+                                        end
+                                        local nameTag = monster:FindFirstChild("NameTag")
+                                        if nameTag then
+                                            nameTag:Destroy()
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        -- Detén el ciclo anterior si existe
+        if updateConnection then
+            updateConnection:Disconnect()
+        end
+
+        -- Inicia el ciclo si el toggle está activado
+        if isEnabled then
+            updateConnection = game:GetService("RunService").Heartbeat:Connect(function()
+                updateMonsters()
+            end)
+        else
+            -- Limpia los elementos si el toggle está apagado
+            updateMonsters()
+        end
+    end,
+})
+
+
+
+
+
+
+
+
+
+
+-- Variables iniciales
+local espGeneratorsEnabled = false
+local showCurrentAmountEnabled = false
+local generatorUpdateConnection = nil
+
+-- Crear Toggle para Esp Generators
+local ToggleEspGenerators = MainTab:Toggle({
+    Title = "Esp Generators",
+    Desc = "Toggles highlighting for generators",
+    Value = false,
+    Callback = function(Value)
+        espGeneratorsEnabled = Value
+        updateGenerators()
+    end,
+})
+
+
+
+-- Función para añadir elementos visuales básicos
+local function addBaseVisuals(generator)
+    if not generator:FindFirstChildOfClass("Highlight") then
+        local highlight = Instance.new("Highlight")
+        highlight.Parent = generator
+        highlight.FillColor = Color3.new(0, 1, 0) -- Verde
+        highlight.OutlineColor = Color3.fromRGB(255, 255, 255) -- Blanco
+        highlight.FillTransparency = 0.5
+    end
+
+    if not generator:FindFirstChild("NameTag") then
+        local billboardGui = Instance.new("BillboardGui")
+        billboardGui.Name = "NameTag"
+        billboardGui.Parent = generator
+        billboardGui.Size = UDim2.new(8, 0, 2, 0)
+        billboardGui.AlwaysOnTop = true
+        billboardGui.MaxDistance = 2000
+
+        local textLabel = Instance.new("TextLabel")
+        textLabel.Parent = billboardGui
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.BackgroundTransparency = 1
+        textLabel.Text = generator.Name
+        textLabel.TextColor3 = Color3.new(0, 1, 0) -- Verde
+        textLabel.TextScaled = true
+        textLabel.Font = Enum.Font.Arima
+    end
+end
+
+-- Función para añadir CurrentAmount
+local function addCurrentAmountVisual(generator)
+    local statsFolder = generator:FindFirstChild("Stats")
+    local currentAmount = statsFolder and statsFolder:FindFirstChild("CurrentAmount")
+    local teleportPositions = generator:FindFirstChild("TeleportPositions")
+    local teleportPart = teleportPositions and teleportPositions:FindFirstChild("TeleportPosition")
+
+    if currentAmount and teleportPart then
+        if not teleportPart:FindFirstChild("CurrentAmountGui") then
+            local billboardGui = Instance.new("BillboardGui")
+            billboardGui.Name = "CurrentAmountGui"
+            billboardGui.Parent = teleportPart
+            billboardGui.Size = UDim2.new(8, 0, 2, 0)
+            billboardGui.AlwaysOnTop = true
+            billboardGui.MaxDistance = 2000
+
+            local textLabel = Instance.new("TextLabel")
+            textLabel.Parent = billboardGui
+            textLabel.Size = UDim2.new(1, 0, 1, 0)
+            textLabel.BackgroundTransparency = 1
+            textLabel.TextColor3 = Color3.new(1, 1, 0) -- Amarillo
+            textLabel.TextScaled = true
+            textLabel.Font = Enum.Font.Arima
+        end
+
+        local textLabel = teleportPart:FindFirstChild("CurrentAmountGui"):FindFirstChildOfClass("TextLabel")
+        if textLabel then
+            textLabel.Text = "Amount: " .. currentAmount.Value
+        end
+    end
+end
+
+-- Función para eliminar elementos visuales básicos
+local function removeBaseVisuals(generator)
+    local highlight = generator:FindFirstChildOfClass("Highlight")
+    if highlight then highlight:Destroy() end
+
+    local nameTag = generator:FindFirstChild("NameTag")
+    if nameTag then nameTag:Destroy() end
+end
+
+-- Función para eliminar CurrentAmount
+local function removeCurrentAmountVisual(generator)
+    local teleportPositions = generator:FindFirstChild("TeleportPositions")
+    local teleportPart = teleportPositions and teleportPositions:FindFirstChild("TeleportPosition")
+    if teleportPart then
+        local currentAmountGui = teleportPart:FindFirstChild("CurrentAmountGui")
+        if currentAmountGui then currentAmountGui:Destroy() end
+    end
+end
+
+-- Función principal para actualizar generadores
+local function updateGenerators()
+    if generatorUpdateConnection then
+        generatorUpdateConnection:Disconnect()
+    end
+
+    generatorUpdateConnection = game:GetService("RunService").Heartbeat:Connect(function()
+        local currentRoom = workspace:FindFirstChild("CurrentRoom")
+        if currentRoom then
+            for _, item in pairs(currentRoom:GetChildren()) do
+                if item:IsA("Model") then
+                    local generatorsFolder = item:FindFirstChild("Generators")
+                    if generatorsFolder then
+                        for _, generator in pairs(generatorsFolder:GetChildren()) do
+                            if generator:IsA("Model") then
+                                local statsFolder = generator:FindFirstChild("Stats")
+                                local completed = statsFolder and statsFolder:FindFirstChild("Completed")
+
+                                if completed and completed:IsA("BoolValue") and completed.Value then
+                                    removeBaseVisuals(generator)
+                                    removeCurrentAmountVisual(generator)
+                                else
+                                    -- Controlar elementos básicos
+                                    if espGeneratorsEnabled then
+                                        addBaseVisuals(generator)
+                                    else
+                                        removeBaseVisuals(generator)
+                                    end
+
+                                    -- Controlar CurrentAmount
+                                    if showCurrentAmountEnabled then
+                                        addCurrentAmountVisual(generator)
+                                    else
+                                        removeCurrentAmountVisual(generator)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end)
+end
+
+
+-- Variables iniciales
+local itemsEnabled = false
+local showResearchMonsterEnabled = false
+local itemsUpdateConnection = nil
+
+-- Crear Toggle para Items
+local ToggleItems = MainTab:Toggle({
+    Title = "Esp Items",
+    Desc = "Toggles highlighting for items",
+    Value = false,
+    Callback = function(Value)
+        itemsEnabled = Value
+        updateItems()
+    end,
+})
+
+
+
+-- Función para añadir elementos visuales básicos a los ítems
+local function addBaseVisuals(item)
+    if not item:FindFirstChildOfClass("Highlight") then
+        local highlight = Instance.new("Highlight")
+        highlight.Parent = item
+        highlight.FillColor = Color3.new(0, 0, 1) -- Azul
+        highlight.OutlineColor = Color3.fromRGB(255, 255, 255) -- Blanco
+        highlight.FillTransparency = 0.5
+    end
+
+    if not item:FindFirstChild("NameTag") then
+        local billboardGui = Instance.new("BillboardGui")
+        billboardGui.Name = "NameTag"
+        billboardGui.Parent = item
+        billboardGui.Size = UDim2.new(8, 0, 2, 0)
+        billboardGui.AlwaysOnTop = true
+        billboardGui.MaxDistance = 2000
+
+        local textLabel = Instance.new("TextLabel")
+        textLabel.Parent = billboardGui
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.BackgroundTransparency = 1
+        textLabel.Text = item.Name
+        textLabel.TextColor3 = Color3.new(0, 0, 1) -- Azul
+        textLabel.TextScaled = true
+        textLabel.Font = Enum.Font.Arima
+
+        local uiGradient = Instance.new("UIGradient")
+        uiGradient.Parent = textLabel
+        uiGradient.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.new(0.7, 0.7, 1)), -- Azul claro
+            ColorSequenceKeypoint.new(1, Color3.new(0, 0, 1)) -- Azul
+        })
+    end
+end
+
+-- Función para añadir el monstruo de la ResearchCapsule
+local function addResearchMonsterVisual(item)
+    local promptPart = item:FindFirstChild("Prompt")
+    if promptPart then
+        local stringValue = promptPart:FindFirstChildOfClass("StringValue")
+        if stringValue then
+            -- Crear el BillboardGui si no existe
+            if not promptPart:FindFirstChild("ResearchMonsterGui") then
+                local billboardGui = Instance.new("BillboardGui")
+                billboardGui.Name = "ResearchMonsterGui"
+                billboardGui.Parent = promptPart
+                billboardGui.Size = UDim2.new(8, 0, 2, 0)
+                billboardGui.AlwaysOnTop = true
+                billboardGui.MaxDistance = 2000
+
+                local textLabel = Instance.new("TextLabel")
+                textLabel.Parent = billboardGui
+                textLabel.Size = UDim2.new(1, 0, 1, 0)
+                textLabel.BackgroundTransparency = 1
+                textLabel.TextColor3 = Color3.new(1, 0.5, 0) -- Naranja
+                textLabel.TextScaled = true
+                textLabel.Font = Enum.Font.Arima
+            end
+
+            -- Actualizar el texto en el BillboardGui
+            local textLabel = promptPart:FindFirstChild("ResearchMonsterGui"):FindFirstChildOfClass("TextLabel")
+            if textLabel then
+                textLabel.Text = "   " .. stringValue.Value
+            end
+        end
+    end
+end
+
+-- Función para eliminar elementos visuales básicos
+local function removeBaseVisuals(item)
+    local highlight = item:FindFirstChildOfClass("Highlight")
+    if highlight then highlight:Destroy() end
+
+    local nameTag = item:FindFirstChild("NameTag")
+    if nameTag then nameTag:Destroy() end
+end
+
+-- Función para eliminar el monstruo de la ResearchCapsule
+local function removeResearchMonsterVisual(item)
+    local promptPart = item:FindFirstChild("Prompt")
+    if promptPart then
+        local researchMonsterGui = promptPart:FindFirstChild("ResearchMonsterGui")
+        if researchMonsterGui then researchMonsterGui:Destroy() end
+    end
+end
+
+-- Función principal para actualizar ítems
+local function updateItems()
+    if itemsUpdateConnection then
+        itemsUpdateConnection:Disconnect()
+    end
+
+    itemsUpdateConnection = game:GetService("RunService").Heartbeat:Connect(function()
+        local currentRoom = workspace:FindFirstChild("CurrentRoom")
+        if currentRoom then
+            for _, item in pairs(currentRoom:GetChildren()) do
+                if item:IsA("Model") then
+                    local itemsFolder = item:FindFirstChild("Items")
+                    if itemsFolder then
+                        for _, subItem in pairs(itemsFolder:GetChildren()) do
+                            if subItem:IsA("Model") then
+                                local isResearchCapsule = subItem.Name == "ResearchCapsule"
+
+                                if itemsEnabled then
+                                    addBaseVisuals(subItem)
+                                else
+                                    removeBaseVisuals(subItem)
+                                end
+
+                                if isResearchCapsule and showResearchMonsterEnabled then
+                                    addResearchMonsterVisual(subItem)
+                                else
+                                    removeResearchMonsterVisual(subItem)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end)
+end
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local highlightEnabled = true
+
+-- Función para agregar o actualizar el Highlight y BillboardGui en un personaje
+local function addHighlightAndNameTag(character)
+    -- Verifica si ya existe un Highlight en el personaje
+    local highlight = character:FindFirstChildOfClass("Highlight")
+    
+    -- Si no existe, crea uno nuevo
+    if not highlight then
+        highlight = Instance.new("Highlight")
+        highlight.Parent = character
+    end
+
+    -- Configura los colores del Highlight
+    highlight.FillColor = Color3.fromRGB(0, 0, 255) -- Azul
+    highlight.OutlineColor = Color3.fromRGB(255, 255, 255) -- Blanco
+
+    -- Verifica si ya existe un BillboardGui para evitar duplicados
+    if not character:FindFirstChild("NameTag") then
+        local billboardGui = Instance.new("BillboardGui")
+        billboardGui.Name = "NameTag"
+        billboardGui.Parent = character
+        billboardGui.Size = UDim2.new(8, 0, 2, 0) -- Tamaño grande
+        billboardGui.AlwaysOnTop = true
+        billboardGui.MaxDistance = 2000 -- Visible desde lejos
+
+        -- Crea el TextLabel dentro del BillboardGui
+        local textLabel = Instance.new("TextLabel")
+        textLabel.Parent = billboardGui
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.BackgroundTransparency = 1 -- Fondo transparente
+        textLabel.Text = character.Name
+        textLabel.TextColor3 = Color3.fromRGB(0, 0, 255) -- Mismo color que el Highlight
+        textLabel.TextScaled = true -- Escalado automático
+        textLabel.Font = Enum.Font.Arima -- Fuente llamativa
+
+        -- Agrega UIGradient al TextLabel
+        local uiGradient = Instance.new("UIGradient")
+        uiGradient.Parent = textLabel
+        uiGradient.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(100, 100, 255)), -- Azul claro
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 255)) -- Azul
+        })
+    end
+end
+
+-- Función para eliminar el Highlight y BillboardGui de un personaje
+local function removeHighlightAndNameTag(character)
+    local highlight = character:FindFirstChildOfClass("Highlight")
+    if highlight then
+        highlight:Destroy()
+    end
+
+    local nameTag = character:FindFirstChild("NameTag")
+    if nameTag then
+        nameTag:Destroy()
+    end
+end
+
+-- Función para aplicar o eliminar el Highlight y NameTag a todos los jugadores según el estado del toggle
+local function updateHighlightsAndNameTags()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player.Character then
+            if highlightEnabled then
+                addHighlightAndNameTag(player.Character)
+            else
+                removeHighlightAndNameTag(player.Character)
+            end
+        end
+    end
+end
+
+-- Añadiendo el Toggle
+local Toggle = MainTab:Toggle({
+    Title = "Esp Players",
+    Desc = "Adds highlight to players",
+    Value = false,
+    Callback = function(state)
+        print(state)
+        highlightEnabled = state
+        updateHighlightsAndNameTags()
+    end,
+})
+
+-- Ejecución periódica de updateHighlightsAndNameTags
+RunService.Heartbeat:Connect(function()
+    if highlightEnabled then
+        updateHighlightsAndNameTags()
+    end
+end)
+
+-- Variable para controlar el estado del toggle
+local isEnabled = false
+local updateConnection
+
+-- Crear el toggle para resaltar monstruos
+local ToggleMonsters = MainTab:Toggle({
+    Title = "Esp Main Twisteds",
+    Desc = "Toggles highlighting for Main monsters",
+    Value = false, -- Estado inicial del toggle
+    Callback = function(Value)
+        isEnabled = Value
+
+        -- Lista de nombres de monstruos específicos
+        local targetMonsters = {
+            "AstroMonster",
+            "VeeMonster",
+            "SproutMonster",
+            "PebbleMonster",
+            "ShellyMonster",
+            "DandyMonster"
+        }
+
+        -- Función para agregar Highlight y NameTag a los monstruos
+        local function highlightMonsters()
+            local currentRoom = workspace:FindFirstChild("CurrentRoom")
+            if currentRoom then
+                for _, item in pairs(currentRoom:GetChildren()) do
+                    if item:IsA("Model") then
+                        local monstersFolder = item:FindFirstChild("Monsters")
+                        if monstersFolder then
+                            for _, monster in pairs(monstersFolder:GetChildren()) do
+                                if monster:IsA("Model") and table.find(targetMonsters, monster.Name) then
+                                    if isEnabled then
+                                        -- Agrega Highlight amarillo
+                                        if not monster:FindFirstChildOfClass("Highlight") then
+                                            local highlight = Instance.new("Highlight")
+                                            highlight.Parent = monster
+                                            highlight.FillColor = Color3.new(1, 1, 0) -- Amarillo
+                                            highlight.OutlineColor = Color3.new(1, 1, 1) -- Blanco
+                                            highlight.FillTransparency = 0.5
+                                        end
+
+                                        -- Agrega NameTag amarillo
+                                        if not monster:FindFirstChild("NameTag") then
+                                            local billboardGui = Instance.new("BillboardGui")
+                                            billboardGui.Name = "NameTag"
+                                            billboardGui.Parent = monster
+                                            billboardGui.Size = UDim2.new(8, 0, 2, 0)
+                                            billboardGui.AlwaysOnTop = true
+                                            billboardGui.MaxDistance = 2000
+
+                                            local textLabel = Instance.new("TextLabel")
+                                            textLabel.Parent = billboardGui
+                                            textLabel.Size = UDim2.new(1, 0, 1, 0)
+                                            textLabel.BackgroundTransparency = 1
+                                            textLabel.Text = monster.Name
+                                            textLabel.TextColor3 = Color3.new(1, 1, 0) -- Amarillo
+                                            textLabel.TextScaled = false
+                                            textLabel.Font = Enum.Font.Arima
+
+                                            local uiGradient = Instance.new("UIGradient")
+                                            uiGradient.Parent = textLabel
+                                            uiGradient.Color = ColorSequence.new({
+                                                ColorSequenceKeypoint.new(0, Color3.new(1, 1, 0.5)),
+                                                ColorSequenceKeypoint.new(1, Color3.new(1, 1, 0))
+                                            })
+                                        end
+                                    else
+                                        -- Elimina Highlight y NameTag si el toggle está apagado
+                                        local highlight = monster:FindFirstChildOfClass("Highlight")
+                                        if highlight then
+                                            highlight:Destroy()
+                                        end
+
+                                        local nameTag = monster:FindFirstChild("NameTag")
+                                        if nameTag then
+                                            nameTag:Destroy()
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        -- Detén el ciclo anterior si existe
+        if updateConnection then
+            updateConnection:Disconnect()
+        end
+
+        -- Inicia el ciclo si el toggle está activado
+        if isEnabled then
+            updateConnection = game:GetService("RunService").Heartbeat:Connect(function()
+                highlightMonsters()
+            end)
+        else
+            -- Limpia los elementos si el toggle está apagado
+            highlightMonsters()
+        end
+    end,
+})
+
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+
+-- Variable para rastrear el estado del toggle
+local updateConnection
+local notifiedModels = {}
+
+
+
+
+local Section = MainTab:Section({ 
+    Title = "|--Notifiers--|",
+    TextXAlignment = "Center",
+    TextSize = 30, -- Default Size
+})
+
+local Toggle = MainTab:Toggle({
+    Title = "Rare Items Notifier",
+    Desc = "Notifies when rare items are found.",
+    Value = false, -- Inicia desactivado
+    Callback = function(state)
+        print("Toggle changed:", state)
+
+        if state then
+            local notifiedModels = {} -- Tabla para rastrear modelos ya notificados
+            local targetModels = { -- Lista de modelos a buscar
+                "Bandage",
+                "HealthKit",
+                "SmokeBomb",
+                "EjectButton",
+                "Valve",
+                "Box chocolates",
+                "AirHorn",
+                "EnigmaCandy",
+                "JumperCable",
+                "PopBottle"
+            }
+            local currentRoom = game.Workspace:FindFirstChild("CurrentRoom")
+
+            if currentRoom then
+                print("Notifier activated.")
+                while state do
+                    for _, model in ipairs(currentRoom:GetChildren()) do
+                        if model:IsA("Model") then
+                            local itemsFolder = model:FindFirstChild("Items")
+                            if itemsFolder then
+                                for _, item in ipairs(itemsFolder:GetChildren()) do
+                                    if table.find(targetModels, item.Name) and not notifiedModels[item.Name] then
+                                        -- Enviar notificación
+                                        WindUI:Notify({
+                                            Title = "Item Found",
+                                            Content = "Rare item: " .. item.Name,
+                                            Duration = 8
+                                        })
+                                        notifiedModels[item.Name] = true -- Marca como notificado
+                                    end
+                                end
+                            end
+                        end
+                    end
+
+                    -- Limpia modelos que ya no existen en la carpeta Items
+                    for modelName, _ in pairs(notifiedModels) do
+                        local stillExists = false
+                        for _, model in ipairs(currentRoom:GetChildren()) do
+                            local itemsFolder = model:FindFirstChild("Items")
+                            if itemsFolder and itemsFolder:FindFirstChild(modelName) then
+                                stillExists = true
+                                break
+                            end
+                        end
+                        if not stillExists then
+                            notifiedModels[modelName] = nil -- Elimina modelos que ya no están
+                        end
+                    end
+
+                    task.wait(5) -- Verifica nuevamente cada 5 segundos
+                end
+            else
+                warn("No se encontró la carpeta CurrentRoom en Workspace.")
+            end
+        else
+            print("Notifier deactivated.")
+        end
+    end
+})
+
+-- Crea el toggle en la interfaz
+local Toggle = MainTab:Toggle({
+    Title = "Rare Monsters Notifier",
+    Desc = "Almost the same with Mains. But this one detects and notifies Rare monsters.",
+    Value = false, -- Inicia desactivado
+    Callback = function(state)
+        local toggleEnabled = state -- Obtiene el estado del toggle
+        print("Toggle changed:", toggleEnabled)
+
+        if toggleEnabled then
+            local notifiedMonsters = {} -- Tabla para rastrear monstruos ya notificados
+
+            -- Función para enviar una notificación personalizada
+            local function sendNotification(monsterName)
+                WindUI:Notify({
+                    Title = "Monster Found",
+                    Content = "Rare monster: " .. monsterName,
+                    Duration = 8
+                })
+            end
+
+            -- Lista de nombres de monstruos a buscar
+            local targetMonsters = {
+                "GoobMonster",
+                "ScrapsMonster",
+                "FlutterMonster",
+                "GigiMonster",
+                "GlistenMonster",
+            }
+
+            -- Busca la carpeta CurrentRoom en Workspace
+            local currentRoom = game.Workspace:FindFirstChild("CurrentRoom")
+            if currentRoom then
+                print("Monster Notifier activated.")
+                while toggleEnabled do
+                    for _, model in ipairs(currentRoom:GetChildren()) do
+                        if model:IsA("Model") then
+                            -- Busca la carpeta Monsters dentro del modelo
+                            local monstersFolder = model:FindFirstChild("Monsters")
+                            if monstersFolder then
+                                -- Revisa los monstruos dentro de Monsters
+                                for _, monster in ipairs(monstersFolder:GetChildren()) do
+                                    if table.find(targetMonsters, monster.Name) and not notifiedMonsters[monster.Name] then
+                                        sendNotification(monster.Name) -- Envía la notificación personalizada
+                                        notifiedMonsters[monster.Name] = true -- Marca el monstruo como notificado
+                                    end
+                                end
+                            end
+                        end
+                    end
+
+                    -- Limpia los monstruos que ya no están en Monsters
+                    for monsterName, _ in pairs(notifiedMonsters) do
+                        local stillExists = false
+                        for _, model in ipairs(currentRoom:GetChildren()) do
+                            local monstersFolder = model:FindFirstChild("Monsters")
+                            if monstersFolder and monstersFolder:FindFirstChild(monsterName) then
+                                stillExists = true
+                                break
+                            end
+                        end
+                        if not stillExists then
+                            notifiedMonsters[monsterName] = nil -- Elimina monstruos que ya no están
+                        end
+                    end
+
+                    task.wait(5) -- Verifica nuevamente cada 5 segundos
+                end
+            else
+                warn("No se encontró la carpeta CurrentRoom en Workspace.")
+            end
+        else
+            print("Monster Notifier deactivated.")
+        end
+    end
+})
+
+-- Crea el toggle en la interfaz
+local Toggle = MainTab:Toggle({
+    Title = "Main Monsters Notifier",
+    Desc = "Detects and notifies Main monsters.",
+    Value = false, -- Inicia desactivado
+    Callback = function(state)
+        local toggleEnabled = state -- Obtiene el estado del toggle
+        print("Toggle changed:", toggleEnabled)
+
+        if toggleEnabled then
+            local notifiedMonsters = {} -- Tabla para rastrear monstruos ya notificados
+
+            -- Función para enviar una notificación personalizada
+            local function sendNotification(monsterName)
+                WindUI:Notify({
+                    Title = "Monster Found",
+                    Content = "Main/Lethal monster: " .. monsterName,
+                    Duration = 8
+                })
+            end
+
+            -- Lista de nombres de monstruos a buscar
+            local targetMonsters = {
+                "AstroMonster",
+                "VeeMonster",
+                "SproutMonster",
+                "PebbleMonster",
+                "ShellyMonster",
+                "DandyMonster"
+            }
+
+            -- Busca la carpeta CurrentRoom en Workspace
+            local currentRoom = game.Workspace:FindFirstChild("CurrentRoom")
+            if currentRoom then
+                print("Monster Notifier activated.")
+                while toggleEnabled do
+                    for _, model in ipairs(currentRoom:GetChildren()) do
+                        if model:IsA("Model") then
+                            -- Busca la carpeta Monsters dentro del modelo
+                            local monstersFolder = model:FindFirstChild("Monsters")
+                            if monstersFolder then
+                                -- Revisa los monstruos dentro de Monsters
+                                for _, monster in ipairs(monstersFolder:GetChildren()) do
+                                    if table.find(targetMonsters, monster.Name) and not notifiedMonsters[monster.Name] then
+                                        sendNotification(monster.Name) -- Envía la notificación personalizada
+                                        notifiedMonsters[monster.Name] = true -- Marca el monstruo como notificado
+                                    end
+                                end
+                            end
+                        end
+                    end
+
+                    -- Limpia los monstruos que ya no están en Monsters
+                    for monsterName, _ in pairs(notifiedMonsters) do
+                        local stillExists = false
+                        for _, model in ipairs(currentRoom:GetChildren()) do
+                            local monstersFolder = model:FindFirstChild("Monsters")
+                            if monstersFolder and monstersFolder:FindFirstChild(monsterName) then
+                                stillExists = true
+                                break
+                            end
+                        end
+                        if not stillExists then
+                            notifiedMonsters[monsterName] = nil -- Elimina monstruos que ya no están
+                        end
+                    end
+
+                    task.wait(5) -- Verifica nuevamente cada 5 segundos
+                end
+            else
+                warn("No se encontró la carpeta CurrentRoom en Workspace.")
+            end
+        else
+            print("Monster Notifier deactivated.")
+        end
+    end
+})
+
+
+local Toggle = MainTab:Toggle({
+    Title = "Low Health Esp & Notify",
+    Desc = "Shows a notify and a esp when somone is injured",
+    Value = false, -- Inicia desactivado
+    Callback = function(state)
+        local localPlayer = Players.LocalPlayer -- El jugador que ejecuta el script
+
+        -- Función para enviar una notificación
+        local function sendNotification(modelName)
+            Library:Notify{
+                Title = "Low Health Alert",
+                Content = "User with low health: " .. modelName,
+                Duration = 5
+            }
+        end
+
+        -- Función principal para revisar los modelos
+        local function monitorLowHealth()
+            local inGamePlayers = workspace:FindFirstChild("InGamePlayers")
+            if inGamePlayers then
+                for _, model in ipairs(inGamePlayers:GetChildren()) do
+                    -- Saltar el modelo si tiene el mismo nombre que el jugador
+                    if model.Name ~= localPlayer.Name and model:IsA("Model") then
+                        local humanoid = model:FindFirstChildOfClass("Humanoid")
+                        if humanoid and humanoid.Health == 1 then
+                            -- Notificar si aún no se ha hecho
+                            if not notifiedModels[model] then
+                                sendNotification(model.Name)
+                                notifiedModels[model] = true
+
+                                -- Agregar Highlight
+                                if not model:FindFirstChildOfClass("Highlight") then
+                                    local highlight = Instance.new("Highlight")
+                                    highlight.Parent = model
+                                    highlight.FillColor = Color3.new(0.4, 0.26, 0.13) -- Marrón
+                                    highlight.OutlineColor = Color3.new(1, 1, 1) -- Blanco
+                                    highlight.FillTransparency = 0.5
+                                end
+                            end
+                        elseif humanoid and (humanoid.Health == 2 or humanoid.Health == 3) then
+                            -- Eliminar Highlight y limpiar notificación si la salud se recupera
+                            local highlight = model:FindFirstChildOfClass("Highlight")
+                            if highlight then
+                                highlight:Destroy()
+                            end
+                            notifiedModels[model] = nil
+                        end
+                    end
+                end
+            else
+                warn("No se encontró la carpeta InGamePlayers en Workspace.")
+            end
+        end
+
+        -- Si el toggle está activado
+        if state then
+            print("Low Health Esp & Notify activado.")
+            updateConnection = RunService.Heartbeat:Connect(function()
+                monitorLowHealth()
+            end)
+        else
+            print("Low Health Esp & Notify desactivado.")
+
+            -- Detener el ciclo
+            if updateConnection then
+                updateConnection:Disconnect()
+                updateConnection = nil
+            end
+
+            -- Limpia los elementos si el toggle está apagado
+            for model, _ in pairs(notifiedModels) do
+                local highlight = model:FindFirstChildOfClass("Highlight")
+                if highlight then
+                    highlight:Destroy()
+                end
+            end
+            notifiedModels = {}
+        end
+    end,
+})
+
+
+
+
+
+local Section = MainTab:Section({ 
+    Title = "|--Auto--|",
+    TextXAlignment = "Center",
+    TextSize = 30, -- Default Size
+})
+
+
+-- LocalScript en StarterPlayerScripts
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local rootPart = character:WaitForChild("HumanoidRootPart")
+local runService = game:GetService("RunService")
+
+-- Lista de cabezas y variable para el toggle
+local heads = {}
+local isTeleportEnabled = false -- Estado inicial del toggle
+
+-- Función para actualizar la lista de cabezas de los modelos
+local function updateHeadsList()
+    heads = {}  -- Limpiar la lista de cabezas
+    local currentRoom = workspace:FindFirstChild("CurrentRoom") -- Buscar carpeta CurrentRoom
+    if not currentRoom then return end
+
+    for _, child in pairs(currentRoom:GetChildren()) do
+        if child:IsA("Model") then
+            local monstersFolder = child:FindFirstChild("Monsters") -- Buscar carpeta Monsters
+            if monstersFolder then
+                -- Recorrer todos los modelos dentro de la carpeta Monsters
+                for _, monster in pairs(monstersFolder:GetChildren()) do
+                    if monster:IsA("Model") then
+                        local head = monster:FindFirstChild("Head") -- Buscar la parte Head
+                        if head then
+                            table.insert(heads, head) -- Agregar la cabeza a la lista
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- Función para teletransportar al jugador entre todas las cabezas
+local function teleportToHeads()
+    if not isTeleportEnabled then return end -- Solo funciona si el toggle está activado
+
+    local index = 1  -- Empezar desde la primera cabeza
+    runService.Heartbeat:Connect(function()
+        if isTeleportEnabled and #heads > 0 then
+            -- Teletransportar al jugador encima de la cabeza actual
+            rootPart.CFrame = CFrame.new(heads[index].Position + Vector3.new(0, 10, 0))
+            index = index + 1
+
+            -- Volver al inicio de la lista si llegamos al final
+            if index > #heads then
+                index = 1
+            end
+        end
+    end)
+end
+
+-- Toggle para activar/desactivar el teletransporte
+local Toggle = MainTab:Toggle({
+    Title = "Auto Distract Monsters",
+    Desc = "Teleports constantly above monster heads ‼️Pretty laggy",
+    Value = false, -- El toggle empieza desactivado
+    Callback = function(state)
+        isTeleportEnabled = state -- Actualizar el estado del toggle
+        if isTeleportEnabled then
+            print("Auto Distract Activated")
+            updateHeadsList() -- Actualiza la lista de cabezas
+            teleportToHeads() -- Comienza el teletransporte
+        else
+            print("Auto Distract Deactivated")
+        end
+    end,
+})
+
+
+local Toggle = MainTab:Toggle({
+    Title = "Auto Collect",
+    Desc = "Auto Collects/Does Machines. Credits to real_li4m_. on Discord.",
+    Value = false, -- El toggle inicia desactivado
+    Callback = function(state)
+        -- Variables necesarias
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local range = 10
+
+        -- Referencia a la conexión o hilo
+        if not _G.autoCollectThread then _G.autoCollectThread = nil end
+
+        -- Función para interactuar con los objetos cercanos
+        local function interactWithNearbyItems()
+            local workspaceObjects = workspace:GetDescendants()
+
+            for _, obj in pairs(workspaceObjects) do
+                if obj:IsA("ProximityPrompt") then
+                    local success, _ = pcall(function()
+                        local distance = (obj.Parent.Position - character.HumanoidRootPart.Position).Magnitude
+                        if distance <= range then
+                            obj:InputHoldBegin()
+                            wait(0.25) -- Simula el tiempo de mantener el prompt
+                            obj:InputHoldEnd()
+                        end
+                    end)
+                    
+                    if not success then
+                        warn("Error interacting with item:", obj)
+                    end
+                end
+            end
+        end
+
+        -- Función principal que ejecuta la interacción
+        local function autoCollect()
+            while _G.autoCollectThread do
+                interactWithNearbyItems() -- Ejecuta la interacción
+                wait(0.8) -- Pausa antes de la siguiente interacción
+            end
+        end
+
+        -- Control del toggle
+        if state then
+            print("Auto Collect activado.")
+            -- Asegurarse de que no haya un hilo previo
+            if _G.autoCollectThread then
+                _G.autoCollectThread = nil
+            end
+
+            -- Inicia el bucle de interacción en un hilo
+            _G.autoCollectThread = true
+            task.spawn(autoCollect)
+        else
+            print("Auto Collect desactivado.")
+            -- Detener el hilo
+            _G.autoCollectThread = nil
+        end
+    end,
+})
+
+
+
+
+
+-- Variables iniciales
+local connection -- Variable global para la conexión
+local isEnabled = false -- Estado global del toggle
+local runService = game:GetService("RunService")
+
+-- Función para invocar el evento de habilidad
+local function invokeAbilityEvent()
+    local args = {
+        [1] = game:GetService("Players").LocalPlayer.Character,
+        [2] = CFrame.new(-65.78115844726562, 145.7693634033203, 86.53424072265625) *
+              CFrame.Angles(4.4136689858476075e-09, 2.9576958503043716e-16, 5.338084818617972e-08),
+        [3] = false
+    }
+    pcall(function()
+        game:GetService("ReplicatedStorage").Events.AbilityEvent:InvokeServer(unpack(args))
+    end)
+end
+
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+
+-- Variable para almacenar la conexión globalmente
+local connection
+
+local Toggle = MainTab:Toggle({
+    Title = "Auto GTE",
+    Desc = "Teleports you to the elevator when Panic is active.",
+    Value = false, -- Inicia desactivado
+    Callback = function(state)
+        if state then
+            print("Panic Teleport activado.")
+
+            -- Busca la carpeta Info y el BoolValue Panic
+            local infoFolder = workspace:FindFirstChild("Info")
+            local panicBool = infoFolder and infoFolder:FindFirstChild("Panic")
+
+            if not panicBool or not panicBool:IsA("BoolValue") then
+                warn("Panic BoolValue no encontrado.")
+                return
+            end
+
+            -- Conecta al evento RunService.Heartbeat
+            connection = RunService.Heartbeat:Connect(function()
+                if panicBool.Value then
+                    -- Busca la carpeta Elevators y MonsterBlocker
+                    local elevatorsFolder = workspace:FindFirstChild("Elevators")
+                    local elevatorModel = elevatorsFolder and elevatorsFolder:FindFirstChildWhichIsA("Model")
+                    local monsterBlocker = elevatorModel and elevatorModel:FindFirstChild("MonsterBlocker")
+
+                    if monsterBlocker and monsterBlocker:IsA("Part") then
+                        -- Teletransporta a todos los jugadores
+                        for _, player in pairs(Players:GetPlayers()) do
+                            local character = player.Character
+                            if character and character:FindFirstChild("HumanoidRootPart") then
+                                character.HumanoidRootPart.CFrame = monsterBlocker.CFrame
+                            end
+                        end
+                    end
+                end
+            end)
+        else
+            print("Panic Teleport desactivado.")
+
+            -- Desconecta la conexión cuando se apague el toggle
+            if connection then
+                connection:Disconnect()
+                connection = nil
+            end
+        end
+    end,
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+local Toggle = MainTab:Toggle({
+    Title = "Auto Skill Check",
+    Desc = "Automatically clicks Gold Area when skill check time, Special Thanks to otvajni for the script",
+    Value = false,  -- El toggle inicia desactivado
+    Callback = function(state)
+        local runService = game:GetService("RunService")
+        local virtualInputManager = game:GetService("VirtualInputManager")
+        local player = game.Players.LocalPlayer
+        local ScreenGui = player:WaitForChild("PlayerGui"):FindFirstChild("ScreenGui")
+
+        -- Declarar conexión fuera de la función
+        if not _G.connection then _G.connection = nil end
+
+        -- Verificación inicial
+        if not ScreenGui then
+            warn("ScreenGui not found.")
+            return
+        end
+
+        local menu = ScreenGui:FindFirstChild("Menu")
+        local skillCheckFrame = menu and menu:FindFirstChild("SkillCheckFrame")
+        local marker = skillCheckFrame and skillCheckFrame:FindFirstChild("Marker")
+        local goldArea = skillCheckFrame and skillCheckFrame:FindFirstChild("GoldArea")
+        local calibrateButton = menu and menu:FindFirstChild("Calibrate")
+
+        if not (marker and goldArea and calibrateButton) then
+            warn("Required elements not found.")
+            return
+        end
+
+        local timeElapsed = 0
+        local checkInterval = 0.01
+
+        -- Función para presionar la tecla espacio
+        local function pressSpace()
+            if skillCheckFrame.Visible then
+                virtualInputManager:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
+                virtualInputManager:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
+            end
+        end
+
+        -- Función para comprobar la posición de los frames
+        local function checkFramesPosition()
+            local frame1X = marker.AbsolutePosition.X
+            local frame2X = goldArea.AbsolutePosition.X
+            local minRange = frame2X
+            local maxRange = frame2X + 10
+
+            if frame1X >= minRange and frame1X <= maxRange then
+                pressSpace()
+            end
+        end
+
+        -- Si el toggle está activado
+        if state then
+            print("Auto Click activado.")
+            -- Asegurarse de que no haya conexiones previas
+            if _G.connection then
+                _G.connection:Disconnect()
+                _G.connection = nil
+            end
+
+            -- Inicia la verificación del marcador
+            _G.connection = runService.RenderStepped:Connect(function(deltaTime)
+                timeElapsed = timeElapsed + deltaTime
+                if timeElapsed >= checkInterval then
+                    timeElapsed = 0
+                    checkFramesPosition()
+                end
+            end)
+        else
+            print("Auto Click desactivado.")
+            -- Detener la conexión cuando se apaga el toggle
+            if _G.connection then
+                _G.connection:Disconnect()
+                _G.connection = nil
+            end
+        end
+    end,
+})
+
+local Toggle = MainTab:Toggle({
+    Title = "Auto Use Ability",
+    Desc = "Automatically uses an ability.",
+    Value = false,
+    Callback = function(state)
+        isEnabled = state -- Actualiza el estado global del toggle
+
+        if isEnabled then
+            print("Auto Use Ability activado.")
+            -- Inicia la conexión al evento Heartbeat
+            connection = runService.Heartbeat:Connect(function()
+                invokeAbilityEvent()
+            end)
+        else
+            print("Auto Use Ability desactivado.")
+            -- Desconecta la conexión existente si está activa
+            if connection then
+                connection:Disconnect()
+                connection = nil
+            end
+        end
+    end
+})
+
+local Toggle = MainTab:Toggle({
+    Title = "Auto Use Items",
+    Desc = "Automatically use items in inventory",
+    Value = false, -- Estado inicial del toggle
+    Callback = function(state)
+        scriptEnabled = state -- Actualizar la variable global del estado del toggle
+
+        -- Crear un bucle solo si el toggle está activo
+        if scriptEnabled then
+            task.spawn(function()
+                while scriptEnabled do
+                    local player = game.Players.LocalPlayer
+                    if player and player.Character and player.Character:FindFirstChild("Inventory") then
+                        -- Invocar eventos para cada slot
+                        for _, slot in ipairs({"Slot1", "Slot2", "Slot3"}) do
+                            local item = player.Character.Inventory:FindFirstChild(slot)
+                            if item then
+                                local args = {player.Character, item}
+                                game.ReplicatedStorage.Events.ItemEvent:InvokeServer(unpack(args))
+                            end
+                        end
+                    end
+                    wait(0.5) -- Esperar 0.5 segundos antes de repetir
+                end
+            end)
+            print("Item Event activado.")
+        else
+            print("Item Event desactivado.")
+        end
+    end,
+})
+
+
+
+
+local Button = MainTab:Button({
+    Title = "Pathfinding Auto Grind Beta",
+    Desc = "Makes you auto grind pls active auto gte and auto skill check ",
+    Callback = function()
+        local Players = game:GetService("Players")
+local PathfindingService = game:GetService("PathfindingService")
+local RunService = game:GetService("RunService")
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local rootPart = character:WaitForChild("HumanoidRootPart")
+local inGamePlayers = workspace:FindFirstChild("InGamePlayers")
+
+local excludedMonsters = {
+    ConnieMonster = true,
+    RodgerMonster = true,
+    RazzleDazzleMonster = true,
+}
+
+local teleportHeight = 40 -- Altura fija de teletransporte
+local returnDelay = 10 -- Tiempo antes de regresar a la posición original
+local pathfindingEnabled = true
+local circleRadius = 30 -- Radio del DetectionCircle
+local isActive = false -- Estado inicial
+
+-- Interfaz flotante
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "ToggleGUI"
+ScreenGui.Parent = player:WaitForChild("PlayerGui")
+
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 200, 0, 100)
+Frame.Position = UDim2.new(0.5, -100, 0.5, -50)
+Frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+Frame.Active = true
+Frame.Draggable = true
+Frame.Parent = ScreenGui
+
+local ActivateButton = Instance.new("TextButton")
+ActivateButton.Size = UDim2.new(0, 180, 0, 40)
+ActivateButton.Position = UDim2.new(0, 10, 0, 10)
+ActivateButton.BackgroundColor3 = Color3.new(0, 0.5, 0)
+ActivateButton.TextColor3 = Color3.new(1, 1, 1)
+ActivateButton.Text = "Enable Beta Pathfing Auto Grind"
+ActivateButton.Parent = Frame
+
+local CloseButton = Instance.new("TextButton")
+CloseButton.Size = UDim2.new(0, 180, 0, 40)
+CloseButton.Position = UDim2.new(0, 10, 0, 50)
+CloseButton.BackgroundColor3 = Color3.new(0.5, 0, 0)
+CloseButton.TextColor3 = Color3.new(1, 1, 1)
+CloseButton.Text = "Close Gui"
+CloseButton.Parent = Frame
+
+-- Botón de activar/desactivar
+ActivateButton.MouseButton1Click:Connect(function()
+    isActive = not isActive
+    ActivateButton.Text = isActive and "Desactivar Sistema" or "Activar Sistema"
+    if isActive then
+        print("Sistema activado.")
+        monitorMonsters()
+        monitorGenerators()
+    else
+        print("Sistema desactivado.")
+        cleanupDetectionCircles()
+    end
+end)
+
+-- Botón de cerrar GUI
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+-- Funciones principales
+
+local detectionCircles = {}
+
+local function teleportTo(part, offset)
+    if rootPart and part then
+        rootPart.CFrame = part.CFrame * offset
+    end
+end
+
+local function teleportPlayerUpAndBack()
+    if not isActive then return end
+
+    local originalPosition = rootPart.Position
+    rootPart.CFrame = CFrame.new(originalPosition + Vector3.new(0, teleportHeight, 0))
+    print("Teletransportado hacia arriba.")
+
+    task.delay(returnDelay, function()
+        if isActive then
+            rootPart.CFrame = CFrame.new(originalPosition)
+            print("Regresando a la posición original.")
+        end
+    end)
+end
+
+local function createDetectionCircle(monster)
+    if not isActive then return end
+
+    local humanoidRootPart = monster:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart or excludedMonsters[monster.Name] or detectionCircles[monster] then return end
+
+    local circle = Instance.new("Part")
+    circle.Name = "DetectionCircle"
+    circle.Shape = Enum.PartType.Ball
+    circle.Size = Vector3.new(circleRadius * 2, circleRadius * 2, circleRadius * 2)
+    circle.Material = Enum.Material.ForceField
+    circle.BrickColor = BrickColor.Red()
+    circle.Transparency = 0.4
+    circle.CanCollide = false
+    circle.Anchored = true
+    circle.CFrame = humanoidRootPart.CFrame
+    circle.Parent = monster
+
+    detectionCircles[monster] = circle
+
+    RunService.Stepped:Connect(function()
+        if not isActive or not monster.Parent then
+            circle:Destroy()
+            detectionCircles[monster] = nil
+        elseif monster.Parent then
+            circle.CFrame = humanoidRootPart.CFrame
+        end
+    end)
+
+    circle.Touched:Connect(function(hit)
+        if isActive and hit.Parent == character and pathfindingEnabled then
+            print("Círculo de detección activado.")
+            teleportPlayerUpAndBack()
+        end
+    end)
+end
+
+local function cleanupDetectionCircles()
+    for monster, circle in pairs(detectionCircles) do
+        if circle then
+            circle:Destroy()
+        end
+        detectionCircles[monster] = nil
+    end
+end
+
+local function monitorMonsters()
+    if not isActive then return end
+
+    local currentRoom = workspace:FindFirstChild("CurrentRoom")
+    if not currentRoom or not inGamePlayers then return end
+
+    for _, model in ipairs(currentRoom:GetChildren()) do
+        local monsters = model:FindFirstChild("Monsters")
+        if monsters then
+            for _, monster in ipairs(monsters:GetChildren()) do
+                local chasingValue = monster:FindFirstChild("ChasingValue")
+                if chasingValue and chasingValue:IsA("ObjectValue") then
+                    if not chasingValue:GetAttribute("Connected") then
+                        chasingValue:GetPropertyChangedSignal("Value"):Connect(function()
+                            if not isActive then return end
+                            local playerFolder = inGamePlayers:FindFirstChild(player.Name)
+                            if chasingValue.Value == playerFolder then
+                                print("Monstruo detectó al jugador.")
+                                teleportPlayerUpAndBack()
+                            end
+                        end)
+                        chasingValue:SetAttribute("Connected", true)
+                    end
+                end
+                if not monster:FindFirstChild("DetectionCircle") then
+                    createDetectionCircle(monster)
+                end
+            end
+        end
+    end
+end
+
+local function moveToGenerator(teleportPart, promptPart)
+    if not isActive or not teleportPart or not promptPart or not pathfindingEnabled then return end
+
+    local path = PathfindingService:CreatePath({
+        AgentRadius = 2,
+        AgentHeight = 5,
+        AgentCanJump = true,
+        AgentJumpHeight = 7,
+        AgentMaxSlope = 45,
+    })
+
+    path:ComputeAsync(rootPart.Position, teleportPart.Position)
+    local waypoints = path:GetWaypoints()
+
+    for _, waypoint in ipairs(waypoints) do
+        humanoid:MoveTo(waypoint.Position)
+        humanoid.MoveToFinished:Wait()
+    end
+
+    local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
+    if proximityPrompt then
+        proximityPrompt:InputHoldBegin()
+        task.wait(0.5)
+        proximityPrompt:InputHoldEnd()
+        print("ProximityPrompt activado.")
+    end
+end
+
+local function findClosestGenerator()
+    if not isActive then return nil, nil end
+
+    local currentRoom = workspace:FindFirstChild("CurrentRoom")
+    if not currentRoom then
+        warn("No se encontró CurrentRoom en Workspace.")
+        return nil, nil
+    end
+
+    local closestDistance = math.huge
+    local closestTeleportPart = nil
+    local closestPromptPart = nil
+
+    for _, model in ipairs(currentRoom:GetChildren()) do
+        local generators = model:FindFirstChild("Generators")
+        if generators then
+            for _, generator in ipairs(generators:GetChildren()) do
+                local teleportPart = generator:FindFirstChild("TeleportPositions") and generator.TeleportPositions:FindFirstChild("TeleportPosition")
+                local promptPart = generator:FindFirstChild("Prompt")
+                local stats = generator:FindFirstChild("Stats")
+                local completed = stats and stats:FindFirstChild("Completed")
+
+                if teleportPart and promptPart and completed and not completed.Value then
+                    local distance = (rootPart.Position - teleportPart.Position).Magnitude
+                    if distance < closestDistance then
+                        closestDistance = distance
+                        closestTeleportPart = teleportPart
+                        closestPromptPart = promptPart
+                    end
+                end
+            end
+        end
+    end
+
+    return closestTeleportPart, closestPromptPart
+end
+
+local function monitorGenerators()
+    if not isActive then return end
+
+    local teleportPart, promptPart = findClosestGenerator()
+    if teleportPart and promptPart then
+        moveToGenerator(teleportPart, promptPart)
+    end
+end
+
+RunService.Heartbeat:Connect(function()
+    if isActive then
+        monitorMonsters()
+        monitorGenerators()
+    end
+end)
+    end,
+})
+
+local Section = MainTab:Section({ 
+    Title = "|--Removers--|",
+    TextXAlignment = "Center",
+    TextSize = 30, -- Default Size
+})
+
+local Button = MainTab:Button({
+    Title = "No Vee Pop-Ups",
+    Desc = "Prevents Vee Pop-Ups from spawning in your screen",
+    Callback = function()
+        local player = game:GetService("Players").LocalPlayer
+local screenGui = player:WaitForChild("PlayerGui"):FindFirstChild("ScreenGui")
+
+if screenGui then
+    local popUp = screenGui:FindFirstChild("PopUp")
+    if popUp then
+        popUp:Destroy()
+        print("PopUp eliminado.")
+    end
+end
+    end,
+})
+
+
+local Button = MainTab:Button({
+    Title = "Protect you when Anticheat triggered", -- Comillas correctamente cerradas
+    Desc = "Prevents you from getting banned but kicks you",
+    Callback = function()
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+-- Referencias a los eventos
+local warnUserEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("WarnUser")
+local antiCheatEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("AntiCheatTrigger")
+
+-- Obtén el jugador local
+local player = Players.LocalPlayer
+
+-- Función para expulsar al jugador
+local function kickPlayer(reason)
+    player:Kick(reason)
+end
+
+-- Detecta si los eventos se ejecutan
+warnUserEvent.OnClientEvent:Connect(function()
+    kickPlayer("Got Protected")
+end)
+
+antiCheatEvent.OnClientEvent:Connect(function()
+    kickPlayer("Got Protected")
+end)
+    end,
+})
+
+
+local Button = MainTab:Button({
+    Title = "Fullbright",
+    Desc = "Removes Game Darkness",
+    Callback = function()
+local Lighting = game:GetService("Lighting")
+
+-- Ajustar las propiedades de iluminación
+Lighting.Brightness = 2  -- Ajusta el brillo general de la escena (puedes modificar este valor)
+Lighting.Ambient = Color3.fromRGB(255, 255, 255)  -- Configura el color ambiental para hacerlo más brillante
+Lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)  -- Establece la luz ambiental exterior a blanco brillante
+
+-- Si hay alguna luz específica que quieras cambiar, puedes ajustar la intensidad de las luces globalmente
+Lighting.FogEnd = 100000  -- Desactivar la niebla para eliminar el efecto de oscuridad a larga distancia
+
+-- Si se utiliza un "TimeOfDay" específico, puedes configurarlo para que sea brillante durante todo el día
+Lighting.TimeOfDay = "14:00:00"  -- Asegura que sea mediodía, cuando hay mucha luz
+    end,
+})
+
+
+
+local Button = MainTab:Button({
+    Title = "Skill Check Remove",
+    Desc = "Not so useful since Auto Skill check so thats why this is here.",
+    Callback = function()
+        local player = game:GetService("Players").LocalPlayer
+local skillCheckFrame = player.PlayerGui.ScreenGui.Menu:FindFirstChild("SkillCheckFrame")
+
+if skillCheckFrame then
+    skillCheckFrame:Destroy()
+end
+    end,
+})
+
+
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+local tpwalking = false
+local connection
+local currentSpeed = 2 -- Velocidad inicial por defecto
+
+-- Ajusta la velocidad de las animaciones en curso
+local function adjustAnimationSpeed(humanoid, speed)
+    for _, track in pairs(humanoid.Animator:GetPlayingAnimationTracks()) do
+        track:AdjustSpeed(speed)
+    end
+end
+
+-- Monitorea nuevas animaciones y ajusta su velocidad
+local function monitorAnimationSpeed(humanoid, speed)
+    if connection then
+        connection:Disconnect()
+    end
+
+    connection = humanoid.Animator.AnimationPlayed:Connect(function(track)
+        track:AdjustSpeed(speed)
+    end)
+end
+
+-- Inicia el Teleport Walk
+local function startTPWalk()
+    tpwalking = true
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:FindFirstChildWhichIsA("Humanoid")
+
+    if not humanoid or not humanoid:FindFirstChild("Animator") then
+        warn("Humanoid or Animator not found!")
+        return
+    end
+
+    adjustAnimationSpeed(humanoid, currentSpeed)
+    monitorAnimationSpeed(humanoid, currentSpeed)
+
+    while tpwalking and character and humanoid and humanoid.Parent do
+        local delta = RunService.Heartbeat:Wait()
+
+        -- Ajusta la velocidad constantemente en el bucle
+        if humanoid.MoveDirection.Magnitude > 0 then
+            character:TranslateBy(humanoid.MoveDirection * currentSpeed * delta * 10)
+        end
+    end
+end
+
+-- Detiene el Teleport Walk
+local function stopTPWalk()
+    tpwalking = false
+
+    local character = player.Character
+    local humanoid = character and character:FindFirstChildWhichIsA("Humanoid")
+    if humanoid then
+        adjustAnimationSpeed(humanoid, 1)
+        if connection then
+            connection:Disconnect()
+            connection = nil
+        end
+    end
+end
+
+-- Toggle para activar/desactivar Teleport Walk
+local TpWalkToggle = Player:Toggle({
+    Title = "Teleport Walk",
+    Desc = "Enable or disable teleport walk.",
+    Value = false,  -- Desactivado por defecto
+    Callback = function(state)
+        if state then
+            print("Teleport Walk activado con velocidad:", currentSpeed)
+            task.spawn(function()
+                startTPWalk()
+            end)
+        else
+            print("Teleport Walk desactivado.")
+            stopTPWalk()
+        end
+    end,
+})
+
+-- Slider para ajustar la velocidad
+local SpeedSlider = Player:Slider({
+    Title = "Walk Speed",
+    Step = 1, -- Ajuste fino
+    Value = {
+        Min = 1,   -- Velocidad mínima
+        Max = 10,    -- Velocidad máxima
+        Default = currentSpeed, -- Valor inicial
+    },
+    Callback = function(value)
+        currentSpeed = value
+        print("Velocidad ajustada a:", currentSpeed)
+
+        -- Actualiza la velocidad en tiempo real
+        local character = player.Character
+        local humanoid = character and character:FindFirstChildWhichIsA("Humanoid")
+        if tpwalking and humanoid then
+            adjustAnimationSpeed(humanoid, currentSpeed)
+            monitorAnimationSpeed(humanoid, currentSpeed)
+        end
+    end,
+})
+
+
+
+local Section = Player:Section({ 
+    Title = "|--Other Settings--|",
+    TextXAlignment = "Center",
+    TextSize = 30, -- Default Size
+})
+
+
+-- Variable para el FieldOfView por defecto
+local defaultFOV = 70
+
+local RotateSpeed = 0 -- Valor inicial para la velocidad de rotación (sin rotación)
+
+-- Crear el Slider
+local Slider = Player:Slider({
+    Title = "Rotation Force",
+    Step = 0.1,
+    Value = {
+        Min = 0,
+        Max = 10,
+        Default = 0, -- Comienza en 0, sin rotación
+    },
+    Callback = function(value)
+        RotateSpeed = value -- Actualiza la velocidad de rotación con el valor del slider
+    end,
+})
+
+
+-- Hacer que el jugador gire
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+-- Actualiza la rotación constantemente
+game:GetService("RunService").Heartbeat:Connect(function()
+    if character and humanoidRootPart then
+        if RotateSpeed > 0 then
+            -- Aplica rotación continua en el eje Y solo si RotateSpeed es mayor que 0
+            humanoidRootPart.CFrame = humanoidRootPart.CFrame * CFrame.Angles(0, math.rad(RotateSpeed), 0)
+        end
+    end
+end)
+
+local Slider = Player:Slider({
+    Title = "Change jump power",  -- Título del slider
+    Step = 1,  -- Paso del slider
+    Value = {
+        Min = 20,  -- Valor mínimo de JumpPower
+        Max = 120,  -- Valor máximo de JumpPower
+        Default = 70,  -- Valor predeterminado de JumpPower
+    },
+    Callback = function(value)
+        -- Obtener el personaje y su humanoide
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoid = character:WaitForChild("Humanoid")
+
+        -- Ajustar el JumpPower del humanoide basado en el valor del slider
+        humanoid.JumpPower = value
+        print("JumpPower ajustado a: " .. value)
+    end
+})
+
+
+
+local Players = game:GetService("Players")
+local localPlayer = Players.LocalPlayer
+
+local Slider = Player:Slider({
+    Title = "Max Zoom Distance",
+    Step = 1, -- Cambios incrementales de 1
+    Value = {
+        Min = 10, -- Valor mínimo del slider
+        Max = 100, -- Valor máximo del slider
+        Default = 50, -- Valor inicial del slider
+    },
+    Callback = function(value)
+        -- Cambia el MaxZoomDistance del jugador local
+        localPlayer.CameraMaxZoomDistance = value
+        print("MaxZoomDistance actualizado a: " .. value)
+    end
+})
+
+-- Crear Slider
+local Slider = Player:Slider({
+    Title = "Field of View",
+    Step = 1,
+    Value = {
+        Min = 20,
+        Max = 120,
+        Default = defaultFOV,
+    },
+    Callback = function(value)
+        local camera = workspace.CurrentCamera
+        if camera then
+            camera.FieldOfView = value
+        end
+    end
+})
+
+-- Crear Botón para resetear el FieldOfView
+local Button = Player:Button({
+    Title = "Reset Field of View",
+    Desc = "Resets the Field of View to default",
+    Callback = function()
+        local camera = workspace.CurrentCamera
+        if camera then
+            camera.FieldOfView = defaultFOV
+        end
+
+        -- Restablecer el valor del slider al predeterminado
+        Slider:Set(defaultFOV)
+    end,
+})
+
+
+
+ local Section = MainTab:Section({ 
+    Title = "|--Others idk--|",
+    TextXAlignment = "Center",
+    TextSize = 30, -- Default Size
+})
+
+-- Variables
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+-- Variable para el estado del Noclip
+local noclipEnabled = false
+
+-- Función para desactivar colisiones de partes cercanas
+local function noclipStep()
+    if noclipEnabled and humanoidRootPart then
+        for _, part in ipairs(workspace:GetPartsInPart(humanoidRootPart)) do
+            if part.CanCollide and not part:IsDescendantOf(character) then
+                part.CanCollide = false
+            end
+        end
+    end
+end
+
+-- Conectar la función al evento RenderStepped
+RunService.RenderStepped:Connect(noclipStep)
+
+-- Toggle para activar/desactivar Noclip
+local Toggle = MainTab:Toggle({
+    Title = "Noclip",
+    Desc = "Toggles and untoggles Noclip for Lobby",
+    Value = false, -- Estado inicial del Toggle
+    Callback = function(state)
+        noclipEnabled = state
+        print("Noclip " .. (state and "activado" or "desactivado"))
+    end,
+})
+
+
+
+
+
+local Toggle = MainTab:Toggle({
+    Title = "Mobile Jump Enabler",  -- Título del toggle
+    Desc = "Enables and disables mobile jump you can change jumppower in Player configs",  -- Descripción del toggle
+    Value = false,  -- Valor inicial, verdadero para habilitar el salto
+    Callback = function(state)  -- Callback que se ejecuta al cambiar el estado del toggle
+        -- Obtener el personaje y su humanoide
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoid = character:WaitForChild("Humanoid")
+
+        -- Activar o desactivar el salto dependiendo del estado del toggle
+        if state then
+            -- Habilitar salto
+            humanoid.JumpPower = 50  -- Ajusta el valor para modificar la altura del salto
+            humanoid.Changed:Connect(function(property)
+                if property == "Jump" and not humanoid.Jumping then
+                    humanoid:ChangeState(Enum.HumanoidStateType.Physics)
+                end
+            end)
+            print("Salto habilitado")
+        else
+            -- Deshabilitar salto (resetear a 0)
+            humanoid.JumpPower = 0
+            print("Salto deshabilitado")
+        end
+    end,
+})
+
+
+local Button = MainTab:Button({
+    Title = "Shiftlock",
+    Desc = "Enables shiftlock",
+    Callback = function()
+        --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet("https://raw.githubusercontent.com/MainScripts352/MainScripts352/refs/heads/main/Encode%20Source"))()loadstring(Decode("➖ ➖ 👉 😚 😋 😜 🤪 👉 😃 😠 👉 🥳 😬 🤪 😶 👇 😶 🤫 😝 😋 😶 👉 🤭 😶 😋 😠 🤪 🤗 👉 🌗 👉 😔 😋 🤐 🤪 👆 😍 😶 😋 😠 🤪 🤗 😱 👆 😙 🤫 😝 😋 😶 😍 😶 😋 😠 🤪 🤗 👇 😶 🤫 😝 😋 😶 👉 😝 😋 🤐 🤪 🤗 😋 👉 🌗 👉 😔 😋 🤐 🤪 👆 ☺️ 🤫 🤗 😐 😱 🤭 😋 😝 🤪 👆 😄 🧐 🤗 🤗 🤪 🤔 🤨 😄 😋 🤐 🤪 🤗 😋 👇 😶 🤫 😝 😋 😶 👉 🧐 😱 🤪 🤗 😭 🤔 🤭 🧐 🤨 🙃 🤪 🤗 😒 😬 😝 🤪 👉 🌗 👉 😔 😋 🤐 🤪 ↕️️ 😂 🤪 🤨 🙃 🤪 🤗 😒 😬 😝 🤪 🌜 🙌 🥲 😱 🤪 🤗 😭 🤔 🤭 🧐 🤨 🙃 🤪 🤗 😒 😬 😝 🤪 🙌 🌛 👇 😶 🤫 😝 😋 😶 👉 🤗 🧐 🤔 🙃 🤪 🤗 😒 😬 😝 🤪 👉 🌗 👉 😔 😋 🤐 🤪 ↕️️ 😂 🤪 🤨 🙃 🤪 🤗 😒 😬 😝 🤪 🌜 🙌 🥳 🧐 🤔 🙃 🤪 🤗 😒 😬 😝 🤪 🙌 🌛 👇 👇 😶 🤫 😝 😋 😶 👉 😱 🥺 😬 🥴 🤨 😙 🤫 😝 😐 😀 😝 🤨 😬 😒 🤪 👉 🌗 👉 🥴 😋 😶 😱 🤪 👇 👇 ➖ ➖ 👉 😄 🤗 🤪 😋 🤨 🤪 👉 🤨 🥺 🤪 👉 🙃 😝 🤗 🤪 🤪 🤔 😂 🧐 😬 👇 😶 🤫 😝 😋 😶 👉 😱 😝 🤗 🤪 🤪 🤔 😂 🧐 😬 👉 🌗 👉 😭 🤔 😱 🤨 😋 🤔 😝 🤪 👆 🤔 🤪 🙄 🌜 🙌 🙃 😝 🤗 🤪 🤪 🤔 😂 🧐 😬 🙌 🌛 👇 😱 😝 🤗 🤪 🤪 🤔 😂 🧐 😬 👆 😍 😋 🤗 🤪 🤔 🤨 👉 🌗 👉 🤭 😶 😋 😠 🤪 🤗 ↕️️ ☺️ 😋 😬 🤨 😅 🤫 🤗 😄 🥺 😬 😶 😜 🌜 🙌 😍 😶 😋 😠 🤪 🤗 😂 🧐 😬 🙌 🌛 👉 👉 ➖ ➖ 👉 😀 😜 😜 👉 🤨 🤫 👉 🤭 😶 😋 😠 🤪 🤗 👐 😱 👉 😂 🥲 😭 👇 😱 😝 🤗 🤪 🤪 🤔 😂 🧐 😬 👆 🥳 🤪 😱 🤪 🤨 🥰 🤔 🙃 🤭 😋 🙄 🤔 👉 🌗 👉 🥴 😋 😶 😱 🤪 👇 👇 ➖ ➖ 👉 😄 🤗 🤪 😋 🤨 🤪 👉 🤨 🥺 🤪 👉 😛 🧐 🤨 🤨 🤫 🤔 👇 😶 🤫 😝 😋 😶 👉 😛 🧐 🤨 🤨 🤫 🤔 👉 🌗 👉 😭 🤔 😱 🤨 😋 🤔 😝 🤪 👆 🤔 🤪 🙄 🌜 🙌 🙂 🤪 😤 🤨 😃 🧐 🤨 🤨 🤫 🤔 🙌 🌛 👇 😛 🧐 🤨 🤨 🤫 🤔 👆 🙃 😬 😡 🤪 👉 🌗 👉 🥲 😁 😬 🤐 💙 👆 🤔 🤪 🙄 🌜 💘 🐊 👉 ❤️ 💚 🐊 👉 💘 🐊 👉 ❤️ 💚 🌛 👉 👉 ➖ ➖ 👉 💚 💘 😤 💚 💘 👉 🤭 😬 😤 🤪 😶 😱 👇 😛 🧐 🤨 🤨 🤫 🤔 👆 😍 🤫 😱 😬 🤨 😬 🤫 🤔 👉 🌗 👉 🥲 😁 😬 🤐 💙 👆 🤔 🤪 🙄 🌜 🤎 🐊 👉 ➖ 🤍 💘 🐊 👉 💘 👆 💚 🐊 👉 💙 💘 🌛 👉 👉 ➖ ➖ 👉 🥳 😬 😔 🥺 🤨 👉 🤐 😬 😜 😜 😶 🤪 👉 😝 🤫 🤗 🤔 🤪 🤗 👇 😛 🧐 🤨 🤨 🤫 🤔 👆 😀 🤔 😝 🥺 🤫 🤗 😍 🤫 😬 🤔 🤨 👉 🌗 👉 😊 🤪 😝 🤨 🤫 🤗 💙 👆 🤔 🤪 🙄 🌜 🤎 🐊 👉 💘 👆 💚 🌛 👉 👉 ➖ ➖ 👉 😀 🤔 😝 🥺 🤫 🤗 👉 🤭 🤫 😬 🤔 🤨 👉 😋 🤨 👉 🤨 🥺 🤪 👉 🤗 😬 😔 🥺 🤨 👉 🤐 😬 😜 😜 😶 🤪 👇 😛 🧐 🤨 🤨 🤫 🤔 👆 🙂 🤪 😤 🤨 👉 🌗 👉 🙌 🙃 🥺 😬 🥴 🤨 👉 😙 🤫 😝 😐 ↕️️ 👉 🥰 😅 😅 🙌 👇 😛 🧐 🤨 🤨 🤫 🤔 👆 🙂 🤪 😤 🤨 🙃 😝 😋 😶 🤪 😜 👉 🌗 👉 🤨 🤗 🧐 🤪 👇 😛 🧐 🤨 🤨 🤫 🤔 👆 😃 😋 😝 😐 😔 🤗 🤫 🧐 🤔 😜 😄 🤫 😶 🤫 🤗 🤍 👉 🌗 👉 😄 🤫 😶 🤫 🤗 🤍 👆 🤔 🤪 🙄 🌜 💘 👆 💚 🐊 👉 💘 👆 💚 🐊 👉 💘 👆 💚 🌛 👉 👉 ➖ ➖ 👉 😭 🤔 😬 🤨 😬 😋 😶 👉 😔 🤗 😋 😠 👉 😝 🤫 😶 🤫 🤗 👇 😛 🧐 🤨 🤨 🤫 🤔 👆 😃 😋 😝 😐 😔 🤗 🤫 🧐 🤔 😜 🙂 🤗 😋 🤔 😱 🤭 😋 🤗 🤪 🤔 😝 😠 👉 🌗 👉 💘 👆 💙 💚 👉 👉 ➖ ➖ 👉 🙃 🤪 🤨 👉 🤨 🤗 😋 🤔 😱 🤭 😋 🤗 🤪 🤔 😝 😠 👉 🤨 🤫 👉 💘 👆 💙 💚 👇 😛 🧐 🤨 🤨 🤫 🤔 👆 😍 😋 🤗 🤪 🤔 🤨 👉 🌗 👉 😱 😝 🤗 🤪 🤪 🤔 😂 🧐 😬 👇 👇 ➖ ➖ 👉 😀 😜 😜 👉 🥲 😭 😄 🤫 🤗 🤔 🤪 🤗 👉 🤨 🤫 👉 🤐 😋 😐 🤪 👉 🤨 🥺 🤪 👉 😛 🧐 🤨 🤨 🤫 🤔 👉 🤗 🤫 🧐 🤔 😜 🤪 😜 👇 😶 🤫 😝 😋 😶 👉 🧐 😬 😄 🤫 🤗 🤔 🤪 🤗 👉 🌗 👉 😭 🤔 😱 🤨 😋 🤔 😝 🤪 👆 🤔 🤪 🙄 🌜 🙌 🥲 😭 😄 🤫 🤗 🤔 🤪 🤗 🙌 🌛 👇 🧐 😬 😄 🤫 🤗 🤔 🤪 🤗 👆 😄 🤫 🤗 🤔 🤪 🤗 🥳 😋 😜 😬 🧐 😱 👉 🌗 👉 🥲 😁 😬 🤐 👆 🤔 🤪 🙄 🌜 💘 👆 💚 🐊 👉 💘 🌛 👉 👉 ➖ ➖ 👉 😀 😜 😑 🧐 😱 🤨 👉 🤨 🥺 🤪 👉 😒 😋 😶 🧐 🤪 👉 🥴 🤫 🤗 👉 😜 😬 🥴 🥴 🤪 🤗 🤪 🤔 🤨 👉 🤗 🤫 🧐 🤔 😜 😬 🤔 😔 👉 🤪 🥴 🥴 🤪 😝 🤨 😱 👇 🧐 😬 😄 🤫 🤗 🤔 🤪 🤗 👆 😍 😋 🤗 🤪 🤔 🤨 👉 🌗 👉 😛 🧐 🤨 🤨 🤫 🤔 👇 👇 ➖ ➖ 👉 🙂 🤫 😔 😔 😶 🤪 👉 😱 🥺 😬 🥴 🤨 👉 😶 🤫 😝 😐 👉 🥴 🧐 🤔 😝 🤨 😬 🤫 🤔 👇 😶 🤫 😝 😋 😶 👉 🥴 🧐 🤔 😝 🤨 😬 🤫 🤔 👉 🤨 🤫 😔 😔 😶 🤪 🙃 🥺 😬 🥴 🤨 😙 🤫 😝 😐 🌜 🌛 👇 👉 👉 👉 👉 😱 🥺 😬 🥴 🤨 😙 🤫 😝 😐 😀 😝 🤨 😬 😒 🤪 👉 🌗 👉 🤔 🤫 🤨 👉 😱 🥺 😬 🥴 🤨 😙 🤫 😝 😐 😀 😝 🤨 😬 😒 🤪 👇 👉 👉 👉 👉 😬 🥴 👉 😱 🥺 😬 🥴 🤨 😙 🤫 😝 😐 😀 😝 🤨 😬 😒 🤪 👉 🤨 🥺 🤪 🤔 👇 👉 👉 👉 👉 👉 👉 👉 👉 ➖ ➖ 👉 🙃 🥺 😬 🥴 🤨 👉 😙 🤫 😝 😐 👉 😋 😝 🤨 😬 😒 🤪 👇 👉 👉 👉 👉 👉 👉 👉 👉 😛 🧐 🤨 🤨 🤫 🤔 👆 🙂 🤪 😤 🤨 👉 🌗 👉 🙌 🙃 🥺 😬 🥴 🤨 👉 😙 🤫 😝 😐 ↕️️ 👉 🥰 😘 🙌 👇 👉 👉 👉 👉 👉 👉 👉 👉 😛 🧐 🤨 🤨 🤫 🤔 👆 😃 😋 😝 😐 😔 🤗 🤫 🧐 🤔 😜 😄 🤫 😶 🤫 🤗 🤍 👉 🌗 👉 😄 🤫 😶 🤫 🤗 🤍 👆 🤔 🤪 🙄 🌜 💘 🐊 👉 💘 🐊 👉 🤎 🌛 👉 👉 ➖ ➖ 👉 😄 🥺 😋 🤔 😔 🤪 👉 🤨 🤫 👉 😛 😶 🧐 🤪 👇 👉 👉 👉 👉 🤪 😶 😱 🤪 👇 👉 👉 👉 👉 👉 👉 👉 👉 ➖ ➖ 👉 😁 😬 😱 😋 😛 😶 🤪 👉 🙃 🥺 😬 🥴 🤨 👉 😙 🤫 😝 😐 🐊 👉 😛 😋 😝 😐 👉 🤨 🤫 👉 🤔 🤫 🤗 🤐 😋 😶 👉 🤐 🤫 😜 🤪 👇 👉 👉 👉 👉 👉 👉 👉 👉 😛 🧐 🤨 🤨 🤫 🤔 👆 🙂 🤪 😤 🤨 👉 🌗 👉 🙌 🙃 🥺 😬 🥴 🤨 👉 😙 🤫 😝 😐 ↕️️ 👉 🥰 😅 😅 🙌 👇 👉 👉 👉 👉 👉 👉 👉 👉 😛 🧐 🤨 🤨 🤫 🤔 👆 😃 😋 😝 😐 😔 🤗 🤫 🧐 🤔 😜 😄 🤫 😶 🤫 🤗 🤍 👉 🌗 👉 😄 🤫 😶 🤫 🤗 🤍 👆 🤔 🤪 🙄 🌜 💘 👆 💚 🐊 👉 💘 👆 💚 🐊 👉 💘 👆 💚 🌛 👉 👉 ➖ ➖ 👉 🥳 🤪 😒 🤪 🤗 🤨 👉 🤨 🤫 👉 😔 🤗 😋 😠 👇 👉 👉 👉 👉 🤪 🤔 😜 👇 🤪 🤔 😜 👇 👇 ➖ ➖ 👉 😅 🧐 🤔 😝 🤨 😬 🤫 🤔 👉 🤨 🤫 👉 🥺 😋 🤔 😜 😶 🤪 👉 😝 😋 🤐 🤪 🤗 😋 👉 😋 🤔 😜 👉 😝 🥺 😋 🤗 😋 😝 🤨 🤪 🤗 👉 🤐 🤫 😒 🤪 🤐 🤪 🤔 🤨 👉 😬 🤔 👉 😱 🥺 😬 🥴 🤨 👉 😶 🤫 😝 😐 👉 🤐 🤫 😜 🤪 👇 🤗 🧐 🤔 🙃 🤪 🤗 😒 😬 😝 🤪 👆 🥳 🤪 🤔 😜 🤪 🤗 🙃 🤨 🤪 🤭 🤭 🤪 😜 ↕️️ 😄 🤫 🤔 🤔 🤪 😝 🤨 🌜 🥴 🧐 🤔 😝 🤨 😬 🤫 🤔 🌜 🌛 👇 👉 👉 👉 👉 😬 🥴 👉 😱 🥺 😬 🥴 🤨 😙 🤫 😝 😐 😀 😝 🤨 😬 😒 🤪 👉 😋 🤔 😜 👉 🤭 😶 😋 😠 🤪 🤗 👆 😄 🥺 😋 🤗 😋 😝 🤨 🤪 🤗 👉 🤨 🥺 🤪 🤔 👇 👉 👉 👉 👉 👉 👉 👉 👉 😶 🤫 😝 😋 😶 👉 😝 🥺 😋 🤗 😋 😝 🤨 🤪 🤗 👉 🌗 👉 🤭 😶 😋 😠 🤪 🤗 👆 😄 🥺 😋 🤗 😋 😝 🤨 🤪 🤗 👇 👉 👉 👉 👉 👉 👉 👉 👉 😶 🤫 😝 😋 😶 👉 🥺 🧐 🤐 😋 🤔 🤫 😬 😜 🥳 🤫 🤫 🤨 😍 😋 🤗 🤨 👉 🌗 👉 😝 🥺 😋 🤗 😋 😝 🤨 🤪 🤗 ↕️️ ☺️ 😋 😬 🤨 😅 🤫 🤗 😄 🥺 😬 😶 😜 🌜 🙌 🤣 🧐 🤐 😋 🤔 🤫 😬 😜 🥳 🤫 🤫 🤨 😍 😋 🤗 🤨 🙌 🌛 👇 👇 👉 👉 👉 👉 👉 👉 👉 👉 ➖ ➖ 👉 😀 😶 😶 🤫 🙄 👉 🤨 🥺 🤪 👉 😝 😋 🤐 🤪 🤗 😋 👉 🤨 🤫 👉 🤐 🤫 😒 🤪 👉 🥴 🤗 🤪 🤪 😶 😠 🐊 👉 😛 🧐 🤨 👉 🤗 🤫 🤨 😋 🤨 🤪 👉 🤨 🥺 🤪 👉 🤭 😶 😋 😠 🤪 🤗 👉 🤨 🤫 👉 🥴 😋 😝 🤪 👉 🤨 🥺 🤪 👉 😝 😋 🤐 🤪 🤗 😋 👐 😱 👉 😜 😬 🤗 🤪 😝 🤨 😬 🤫 🤔 👇 👉 👉 👉 👉 👉 👉 👉 👉 😶 🤫 😝 😋 😶 👉 😝 😋 🤐 🤪 🤗 😋 😙 🤫 🤫 😐 😁 😬 🤗 🤪 😝 🤨 😬 🤫 🤔 👉 🌗 👉 😊 🤪 😝 🤨 🤫 🤗 🤍 👆 🤔 🤪 🙄 🌜 😝 😋 🤐 🤪 🤗 😋 👆 😄 😅 🤗 😋 🤐 🤪 👆 😙 🤫 🤫 😐 😊 🤪 😝 🤨 🤫 🤗 👆 😌 🐊 👉 💘 🐊 👉 😝 😋 🤐 🤪 🤗 😋 👆 😄 😅 🤗 😋 🤐 🤪 👆 😙 🤫 🤫 😐 😊 🤪 😝 🤨 🤫 🤗 👆 🤤 🌛 👆 🧐 🤔 😬 🤨 👇 👉 👉 👉 👉 👉 👉 👉 👉 🥺 🧐 🤐 😋 🤔 🤫 😬 😜 🥳 🤫 🤫 🤨 😍 😋 🤗 🤨 👆 😄 😅 🤗 😋 🤐 🤪 👉 🌗 👉 😄 😅 🤗 😋 🤐 🤪 👆 🤔 🤪 🙄 🌜 🥺 🧐 🤐 😋 🤔 🤫 😬 😜 🥳 🤫 🤫 🤨 😍 😋 🤗 🤨 👆 😍 🤫 😱 😬 🤨 😬 🤫 🤔 🐊 👉 🥺 🧐 🤐 😋 🤔 🤫 😬 😜 🥳 🤫 🤫 🤨 😍 😋 🤗 🤨 👆 😍 🤫 😱 😬 🤨 😬 🤫 🤔 👉 ➕ 👉 😝 😋 🤐 🤪 🤗 😋 😙 🤫 🤫 😐 😁 😬 🤗 🤪 😝 🤨 😬 🤫 🤔 🌛 👇 👉 👉 👉 👉 🤪 🤔 😜 👇 🤪 🤔 😜 🌛 👇 👇 ➖ ➖ 👉 😄 🤫 🤔 🤔 🤪 😝 🤨 👉 🤨 🥺 🤪 👉 😛 🧐 🤨 🤨 🤫 🤔 👉 😝 😶 😬 😝 😐 👉 🤨 🤫 👉 🤨 🤫 😔 😔 😶 🤪 👉 🙃 🥺 😬 🥴 🤨 👉 😙 🤫 😝 😐 👇 😛 🧐 🤨 🤨 🤫 🤔 👆 😚 🤫 🧐 😱 🤪 😃 🧐 🤨 🤨 🤫 🤔 🤎 😄 😶 😬 😝 😐 ↕️️ 😄 🤫 🤔 🤔 🤪 😝 🤨 🌜 🤨 🤫 😔 😔 😶 🤪 🙃 🥺 😬 🥴 🤨 😙 🤫 😝 😐 🌛 ","G-Code"))()
+    end,
+})
+
+
+
+local Button = MainTab:Button({
+    Title = "Anti Lag",
+    Desc = "The run button on mobile will be deleted",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Función para reducir el lag
+local function reduceLag()
+    -- Desactiva y elimina texturas y efectos visuales en el entorno de Workspace
+    for _, part in pairs(workspace:GetDescendants()) do
+        if part:IsA("Decal") or part:IsA("Texture") or part:IsA("ParticleEmitter") then
+            part:Destroy()  -- Elimina efectos visuales
+        elseif part:IsA("MeshPart") then
+            part.TextureID = ""  -- Elimina la textura de la MeshPart
+            part.Material = Enum.Material.SmoothPlastic  -- Cambia el material para simplificar
+            part.Reflectance = 0
+        elseif part:IsA("BasePart") and part.Transparency < 1 then
+            part.Material = Enum.Material.SmoothPlastic  -- Cambia materiales para mejorar rendimiento
+            part.Reflectance = 0
+        end
+    end
+
+    -- Desactiva efectos visuales de la herramienta o accesorios del jugador
+    for _, accessory in pairs(character:GetChildren()) do
+        if accessory:IsA("Accessory") then
+            for _, descendant in pairs(accessory:GetDescendants()) do
+                if descendant:IsA("ParticleEmitter") or descendant:IsA("Decal") or descendant:IsA("Texture") then
+                    descendant:Destroy()
+                end
+            end
+        end
+    end
+
+    -- Ajusta la iluminación del juego para reducir el consumo de recursos
+    game.Lighting.GlobalShadows = false
+    game.Lighting.Brightness = 1
+    game.Lighting.OutdoorAmbient = Color3.new(1, 1, 1)
+
+    -- Desactiva sonidos innecesarios
+    for _, sound in pairs(workspace:GetDescendants()) do
+        if sound:IsA("Sound") then
+            sound:Stop()  -- Detiene sonidos, pero no los elimina
+        end
+    end
+
+    -- Ajusta los efectos visuales de la interfaz de usuario
+    for _, uiElement in pairs(player.PlayerGui:GetDescendants()) do
+        if uiElement:IsA("ImageLabel") or uiElement:IsA("ImageButton") then
+            uiElement.ImageTransparency = 1  -- Reduce la visibilidad de las imágenes en lugar de ocultarlas completamente
+        end
+    end
+end
+
+-- Ejecuta la función de reducción de lag
+reduceLag()
+    end,
+})
+
+
+
+local Button = MainTab:Button({
+    Title = "Pick all Floor Items",
+    Desc = "Higly Recommended using after floor 1",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Espera a que el jugador tenga un HumanoidRootPart
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+-- Busca la carpeta CurrentRoom en Workspace
+local currentRoom = game.Workspace:FindFirstChild("CurrentRoom")
+if currentRoom then
+    -- Busca un modelo dentro de CurrentRoom
+    for _, model in ipairs(currentRoom:GetChildren()) do
+        if model:IsA("Model") then
+            -- Busca la carpeta Items dentro del modelo
+            local itemsFolder = model:FindFirstChild("Items")
+            if itemsFolder and #itemsFolder:GetChildren() > 0 then
+                -- Itera a través de los modelos dentro de Items
+                for _, item in ipairs(itemsFolder:GetChildren()) do
+                    if item:IsA("Model") then
+                        -- Teletransporta al jugador al modelo
+                        humanoidRootPart.CFrame = item:GetModelCFrame()
+                        task.wait(0.1)
+
+                        -- Busca una parte llamada Prompt
+                        local promptPart = item:FindFirstChild("Prompt")
+                        if promptPart and promptPart:IsA("BasePart") then
+                            -- Busca el ProximityPrompt dentro de Prompt
+                            local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
+                            if proximityPrompt then
+                                -- Intenta activar el ProximityPrompt varias veces
+                                for attempt = 1, 3 do
+                                    proximityPrompt:InputHoldBegin()
+                                    task.wait(0.1)
+                                    proximityPrompt:InputHoldEnd()
+                                    task.wait(0.1)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+else
+    warn("No se encontró la carpeta CurrentRoom en Workspace.")
+end
+    end,
+})
+
+-- Variable para verificar si es la primera vez que el jugador escribe
+local firstTime = true
+
+-- Crear el input para que el jugador escriba el nombre del toon
+local Input = MainTab:Input({
+    Title = "Get Vintage Skins For 600 Ichor",
+    Desc = "Enter The Name From The Toon. Maded By cosmicly3441",
+    Value = "",
+    PlaceholderText = "Example: Brightney",
+    ClearTextOnFocus = true,
+    Callback = function(Text)
+        if firstTime then
+            -- Mostrar notificación y evitar la ejecución del script
+            local Notification = WindUI:Notify({
+                Title = "WARNING",
+                Content = "Dont use newest toons or else you will get banned. And remember that these cost 600. Type toon name again",
+                Duration = 10
+            })
+            firstTime = false
+        else
+            -- Eliminar espacios del texto ingresado
+            local sanitizedText = Text:gsub("%s+", "")
+
+            -- Código para invocar el servidor con el nombre del toon ingresado
+            local args = {
+                [1] = "Gacha1",
+                [2] = "Vintage" .. sanitizedText
+            }
+
+            game:GetService("ReplicatedStorage").BuySkin:InvokeServer(unpack(args))
+            print("Nombre del toon enviado: " .. args[2])
+        end
+    end
+})
+
+
+
+ local Section = MainTab:Section({ 
+    Title = "|--Ability Hacks--|",
+    TextXAlignment = "Center",
+    TextSize = 30, -- Default Size
+})
+
+
+
+
+
+local Toggle = MainTab:Toggle({
+    Title = "Auto Sprout Self Heal",
+    Desc = "Auto Heals yourself with sprout",
+    Value = false, -- El toggle inicia desactivado
+    Callback = function(state)
+        -- Variable para controlar si el script está activo
+        if not _G.scriptThread then _G.scriptThread = nil end
+
+        -- Función para ejecutar el evento AbilityEvent
+        local function invokeAbilityEvent()
+            local args = {
+                [1] = game:GetService("Players").LocalPlayer.Character,
+                [2] = CFrame.new(-179.29843139648438, 146.2311248779297, -164.61495971679688) * CFrame.Angles(3.1415927410125732, 0.4017193913459778, -3.141592502593994),
+                [3] = game:GetService("Players").LocalPlayer.Character
+            }
+
+            game:GetService("ReplicatedStorage").Events.AbilityEvent:InvokeServer(unpack(args))
+        end
+
+        -- Función principal para ejecutar el evento cada segundo
+        local function autoInvoke()
+            while _G.scriptThread do
+                invokeAbilityEvent() -- Ejecutar el evento
+                wait(1) -- Esperar 1 segundo antes de ejecutar nuevamente
+            end
+        end
+
+        -- Control del toggle
+        if state then
+            print("Auto Sprout Self Heal activado.")
+            -- Inicia el ciclo automático en un hilo
+            if not _G.scriptThread then
+                _G.scriptThread = true
+                task.spawn(autoInvoke)
+            end
+        else
+            print("Auto Sprout Self Heal desactivado.")
+            -- Detener el hilo
+            _G.scriptThread = nil
+        end
+    end,
+})
+
+
+
+
+
+local activeThread = nil -- Variable para rastrear el hilo activo
+
+
+local Button = MainTab:Button({
+    Title = "Sprout Self Heal",
+    Desc = "Heals yourself with sprout",
+    Callback = function()
+        -- Función para ejecutar el evento AbilityEvent
+        local function invokeAbilityEvent()
+            local args = {
+                [1] = game:GetService("Players").LocalPlayer.Character,
+                [2] = CFrame.new(-179.29843139648438, 146.2311248779297, -164.61495971679688) * CFrame.Angles(3.1415927410125732, 0.4017193913459778, -3.141592502593994),
+                [3] = game:GetService("Players").LocalPlayer.Character
+            }
+
+            game:GetService("ReplicatedStorage").Events.AbilityEvent:InvokeServer(unpack(args))
+        end
+
+        -- Llamar a la función al presionar el botón
+        invokeAbilityEvent()
+        print("AbilityEvent invoked!")
+    end,
+})
+
+local Button = MainTab:Button({
+    Title = "Self Shelly Boost",
+    Desc = "Auto boosts yourself of you are using shelly",
+    Callback = function()
+        -- Función para ejecutar el evento AbilityEvent
+        local function invokeAbilityEvent()
+            local args = {
+                [1] = game:GetService("Players").LocalPlayer.Character,
+                [2] = CFrame.new(-179.29843139648438, 146.2311248779297, -164.61495971679688) * CFrame.Angles(3.1415927410125732, 0.4017193913459778, -3.141592502593994),
+                [3] = game:GetService("Players").LocalPlayer.Character
+            }
+
+            game:GetService("ReplicatedStorage").Events.AbilityEvent:InvokeServer(unpack(args))
+        end
+
+        -- Llamar a la función al presionar el botón
+        invokeAbilityEvent()
+        print("AbilityEvent invoked!")
+    end,
+})
+
+
+
+local Section = MainTab:Section({ 
+    Title = "|--Showing Purposes--|",
+    TextXAlignment = "Center",
+    TextSize = 30, -- Default Siz
+})
+
+local Button = MainTab:Button({
+    Title = "Visual Dandy",
+    Desc = "This is not made by me, its important to use boxten.",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/LrGDCr7Z"))();
+    end,
+})
+
+
+
+local Button = MainTab:Button({
+    Title = "Goofy Ahh Twisteds Heads",
+    Desc = "Makes Monsters heads a circle",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/JhdK4Z3k"))();
+    end,
+})
+
+local Button = MainTab:Button({
+    Title = "Lobotomy Script",
+    Desc = "HIGH VOLUME WARNING. Not maded by me",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Slendyvn/Dandy-script/refs/heads/main/E"))()
+    end,
+})
+
+local Button = MainTab:Button({
+    Title = "Delete Dev Door",
+    Desc = "Only Working For lobby",
+    Callback = function()
+        workspace.DevDoor:Destroy()
+wait(1)
+workspace.DevDoor2:Destroy()
+    end,
+})
+
+
+
+local Players = game:GetService("Players")
+local PathfindingService = game:GetService("PathfindingService")
+local LocalPlayer = Players.LocalPlayer
+local selectedPlayer = nil -- Variable para almacenar al jugador seleccionado
+
+local Input = Trolling:Input({
+    Title = "Pathfinding Player Follower",
+    Desc = "Enter the name of the player to follow (Autocomplete enabled)",
+    Value = "", -- Valor inicial vacío
+    PlaceholderText = "Enter player name...",
+    ClearTextOnFocus = true, -- Limpia el texto al enfocarse
+    Callback = function(inputText)
+        -- Encuentra el jugador cuyo nombre comienza con el texto ingresado
+        for _, player in ipairs(Players:GetPlayers()) do
+            if string.sub(player.Name:lower(), 1, #inputText) == inputText:lower() then
+                selectedPlayer = player
+                print("Autocomplete: " .. player.Name)
+                break
+            end
+        end
+
+        if selectedPlayer then
+            print("Siguiendo a:", selectedPlayer.Name)
+
+            -- Función para iniciar el seguimiento
+            local function followPlayer()
+                while selectedPlayer and selectedPlayer.Character and selectedPlayer.Character:FindFirstChild("HumanoidRootPart") do
+                    local targetPosition = selectedPlayer.Character.HumanoidRootPart.Position
+                    local character = LocalPlayer.Character
+                    local humanoid = character and character:FindFirstChild("Humanoid")
+                    local rootPart = character and character:FindFirstChild("HumanoidRootPart")
+
+                    if humanoid and rootPart then
+                        local path = PathfindingService:CreatePath({
+                            AgentRadius = 2,
+                            AgentHeight = 5,
+                            AgentCanJump = true,
+                            AgentJumpHeight = 7,
+                            AgentMaxSlope = 45,
+                        })
+
+                        -- Calcula el camino hacia la posición objetivo
+                        path:ComputeAsync(rootPart.Position, targetPosition)
+
+                        if path.Status == Enum.PathStatus.Success then
+                            -- Recorre los waypoints generados por la ruta
+                            for _, waypoint in ipairs(path:GetWaypoints()) do
+                                humanoid:MoveTo(waypoint.Position)
+                                humanoid.MoveToFinished:Wait() -- Espera a que el humanoide alcance el waypoint
+
+                                -- Verifica si el jugador aún existe
+                                if not selectedPlayer or not selectedPlayer.Character or not selectedPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                    print("Jugador ya no está disponible")
+                                    return
+                                end
+                            end
+                        else
+                            print("No se pudo calcular la ruta")
+                        end
+                    end
+
+                    wait(0.5) -- Espera un poco antes de recalcular la ruta
+                end
+            end
+
+            -- Llama a la función en un nuevo hilo
+            task.spawn(followPlayer)
+        else
+            print("Jugador no encontrado o inválido")
+        end
+    end,
+})
+
+
+local rotationThread  -- Variable para almacenar el hilo de rotación
+
+local Slider = Trolling:Slider({
+    Title = "Spin Speed Slider",
+    Step = 1,
+    Value = {
+        Min = 0,
+        Max = 100,  -- El rango de la velocidad de rotación (0 a 100)
+        Default = 0,
+    },
+    Callback = function(value)
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+
+        -- Si ya existe un hilo de rotación, lo cancelamos para evitar múltiples hilos
+        if rotationThread then
+            task.cancel(rotationThread)
+            rotationThread = nil
+        end
+
+        -- Verifica si el personaje y su HumanoidRootPart existen
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            -- Si el valor del slider es mayor que 0, iniciamos la rotación
+            if value > 0 then
+                rotationThread = task.spawn(function()
+                    while value > 0 do
+                        -- Gira el jugador alrededor del eje Y
+                        character.HumanoidRootPart.CFrame = character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(value), 0)
+                        wait(0.01)  -- Espera breve para controlar la velocidad del giro
+                    end
+                end)
+            end
+        end
+    end
+})
+
+
+
+local Section = Trolling:Section({ 
+    Title = "|--Others to Show--|",
+    TextXAlignment = "Center",
+    TextSize = 30, -- Default Size
+})
+
+local Slider = Trolling:Slider({
+    Title = "Change }} Ichor",
+    Step = 1,
+    Value = {
+        Min = 0,
+        Max = 100000,
+        Default = 0,
+    },
+    Callback = function(value)
+local player = game.Players.LocalPlayer.UserId
+
+game.ReplicatedStorage.PlayerData:FindFirstChild(player).Coin.Value += value
+    end
+})
+
+local Button = Trolling:Button({
+    Title = "Fake Get All Toons",
+    Desc = "Gives you all fake toons. You need to reset after clicking",
+    Callback = function()
+        local player = game.Players.LocalPlayer.UserId
+local folder = game.ReplicatedStorage.PlayerData:FindFirstChild(player).Towers
+
+local names = {"Boxten", "Brightney", "Cosmo", "Finn", "Flutter", "Gigi", "Glisten", "Goob", "Poppy", "RazzleDazzle", "Rodger", "Scraps", "Shrimpo", "Teagan", "Tisha", "Toodles", "Sprout", "Vee", "Dandy", "Shelly", "Pebble", "Astro", "Dandy"}
+for _, name in pairs(names) do
+    local toon = Instance.new("StringValue", folder)
+    toon.Name = name
+    toon.Value = "Default"
+end
+    end,
+})
+
+
+
+local Button = Trolling:Button({
+    Title = "Fake Get All Trinkets",
+    Desc = "Gives you all fake Trinkets. You need to reset after clicking",
+    Callback = function()
+        local player = game.Players.LocalPlayer.UserId
+local folder = game.ReplicatedStorage.PlayerData:FindFirstChild(player).Trinkets
+
+local names = {"ParticipationAward", "NightCap", "BlueBandana", "Alarm", "BlushyBat", "Bone", "Brick", "CardboardArmor", "ClownHorn", "CoinPurse", "CrayonSet", "DandyPlush", "Diary", "DogPlush", "FancyPurse", "FeatherDuster", "FishingRod", "FriendshipBracelet", "MagnifyingGlass", "GhostSnakes", "LuckyCoin",  "Savory charm", "PinkBow", "RibbonSpool", "PopPack", "PullToy", "MachineManual",  "SpareBulb", 	"SpeedyShoes", "Thermos",  "Speedometer", "SweerCharm", "ThinkingCap", "VanityMirror", "VeeRemote", "Wrench", "WaterCooler", "MegaPhone"}
+for _, name in pairs(names) do
+    local trinket = Instance.new("StringValue", folder)
+    trinket.Name = name
+    trinket.Value = "Default"
+end
+    end,
+})
+
+
+
+
+local Button = Trolling:Button({
+    Title = "Fake Client Owner Tag",
+    Desc = "Gives you client owner tag",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.NameTag.Frame.GroupRank.Visible = true
+    end,
+})
+
+local Button = Trolling:Button({
+    Title = "Fake Qwelver Nametag",
+    Desc = "Makes you have Client Qwel Tag",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.NameTag.Frame.UserName.Text = ("(@Qwelver)")game.Players.LocalPlayer.Character.HumanoidRootPart.NameTag.Frame.DisplayName.Text = ("Qwelver")game.Players.LocalPlayer.Character.HumanoidRootPart.NameTag.Frame.GroupRank.Visible = true
+    end,
+})
+
+
+
+
+
+
+
+
+local Section = Extra:Section({ 
+    Title = "🐱|--Otvajni Scripts--|🐱",
+    TextXAlignment = "Center",
+    TextSize = 25, -- Default Size
+})
+
+local Paragraph = Extra:Paragraph({
+    Title = "These Scripts are made by ega_biba or KotoLog discord Server",
+    Desc = "¿Want to copy their discord link?",
+    Image = "hand-heart", -- lucide or URL or rbxassetid://
+    ImageSize = 20,
+    Buttons = {
+        {
+            Title = "Copy Discord Link",
+            Callback = function() 
+                local textToCopy = "https://discord.gg/kotolog"
+
+                -- Verificar si el exploit soporta setclipboard
+                if setclipboard then
+                    setclipboard(textToCopy)
+                    print("Texto copiado al portapapeles: " .. textToCopy)
+                else
+                    print("Este exploit no soporta la función setclipboard.")
+                end
+            end
+        }
+    }
+})
+
+local Button = Extra:Button({
+    Title = "Fly Reborn Script",
+    Desc = "OP Fly Script",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/PDdkDsgy"))()
+    end,
+})
+
+local Button = Extra:Button({
+    Title = "Change all game Paintings to iriska ",
+    Desc = "Iriska = Cute",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/ipknJXby"))()
+    end,
+})
+
+local Button = Extra:Button({
+    Title = "Admin Panel Gui",
+    Desc = "Opens KotoLog Admin Gui",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/VA4t52Ae"))()
+    end,
+})
+
+local Button = Extra:Button({
+    Title = "Freaky Script",
+    Desc = "👅Converts all to freaky👅",
+    Callback = function()
+        local pastebinURL = "https://pastebin.com/raw/SdGZaVZs" local loadedScript = loadstring(game:HttpGet(pastebinURL))()
+
+local FREAKY_ID = 87134700438873 -- 👅👅👅
+
+loadedScript(FREAKY_ID)
+    end,
+})
+
+
+local Section = Extra:Section({ 
+    Title = "|--Inspired In Looey Bin--|",
+    TextXAlignment = "Center",
+    TextSize = 20, -- Default Size
+})
+
+
+local Paragraph = Extra:Paragraph({
+    Title = "¿Want to copy Looey Bin Discord Server?",
+    Desc = "Copy Looey Bin Discord",
+    Image = "hand-heart", -- lucide or URL or rbxassetid://
+    ImageSize = 20,
+    Buttons = {
+        {
+            Title = "Copy Discord Link",
+            Callback = function() 
+                local textToCopy = "https://discord.gg/dandysworldexploits"
+
+                -- Verificar si el exploit soporta setclipboard
+                if setclipboard then
+                    setclipboard(textToCopy)
+                    print("Texto copiado al portapapeles: " .. textToCopy)
+                else
+                    print("Este exploit no soporta la función setclipboard.")
+                end
+            end
+        }
+    }
+})
+
+
+
+
+-- Crear Toggle para mostrar CurrentAmount
+local ToggleShowCurrentAmount = Extra:Toggle({
+    Title = "Show Generators Current Amount",
+    Desc = "Displays the CurrentAmount value of generators",
+    Value = false,
+    Callback = function(Value)
+        showCurrentAmountEnabled = Value
+        updateGenerators()
+    end,
+})
+
+
+-- Crear Toggle para mostrar el monstruo de las ResearchCapsules
+local ToggleShowResearchMonster = Extra:Toggle({
+    Title = "Show Research Capsule Monster",
+    Desc = "Displays the monster associated with ResearchCapsules",
+    Value = false,
+    Callback = function(Value)
+        showResearchMonsterEnabled = Value
+        updateItems()
+    end,
+})
+
+local Section = Extra:Section({ 
+    Title = "|--Esp Visualisations--|",
+    TextXAlignment = "Center",
+    TextSize = 28, -- Default Size
+})
+
+-- Color Picker para el Fill Color del Highlight
+local ColorpickerFill = Extra:Colorpicker({
+    Title = "Esp Twisteds Highlight Fill Color",
+    Desc = "Select the fill color for the esp Twisteds",
+    Default = highlightFillColor, -- Color inicial
+    Callback = function(color)
+        -- Actualiza el color del relleno del Highlight
+        highlightFillColor = color
+        print("Color del Highlight actualizado a: ", color)
+    end
+})
+
+-- Dropdown para seleccionar la fuente del texto
+local DropdownFont = Extra:Dropdown({
+    Title = "Esp Twisteds Font Selector",
+    Desc = "Select the font for the Twisteds",
+    Value = "Arial", -- Fuente inicial por defecto
+    Multi = false,
+    AllowNone = false,
+    Values = { "Arial", "Gotham", "GothamBold", "Cartoon", "SourceSans", "Antique", "SciFi" }, -- Fuentes disponibles
+    Callback = function(selectedValue)
+        -- Actualiza la fuente seleccionada
+        selectedFont = Enum.Font[selectedValue]
+        print("Fuente seleccionada:", selectedValue)
+    end
+})
+
+
+
+
+
+local Section = Extra:Section({ 
+    Title = "|--Other cool hubs that i like--|",
+    TextXAlignment = "Center",
+    TextSize = 20, -- Default Size
+})
+
+local Button = Extra:Button({
+    Title = "Noxius Hub",
+    Desc = "Opens sick gui",
+    Callback = function()
+        --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet("https://pastebin.com/raw/y8eKgLSs"))()
+    end,
+})
+
+local Button = Extra:Button({
+    Title = "G0bbyd0llan57 Hub",
+    Desc = "Opens another sick hub",
+    Callback = function()
+        --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+--By G0bbyD0llan57 On The YT
+loadstring(game:HttpGet("https://pastebin.com/raw/QQt4pVtu"))() 
+    end,
+})
+
+
+
+
+
+local Section = Trolling:Section({ 
+    Title = "|--Client Skins only in-game--|",
+    TextXAlignment = "Center",
+    TextSize = 20, -- Default Size
+})
+
+
+local Button = Trolling:Button({
+    Title = "Blue Vee",
+    Desc = "Converts you to a blue vee",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+local playerName = player.Name
+local workspace = game:GetService("Workspace")
+
+-- IDs de las texturas y mesh a aplicar
+local bodyTextureId = "rbxassetid://18944440468"
+local micMeshId = "rbxassetid://102768583995591"
+local headTextureId = "rbxassetid://18944440468"
+
+-- Buscar la carpeta y el modelo del jugador
+local inGamePlayersFolder = workspace:FindFirstChild("InGamePlayers")
+if inGamePlayersFolder then
+    local playerModel = inGamePlayersFolder:FindFirstChild(playerName)
+    if playerModel then
+        -- Cambiar textura de 'Body'
+        local body = playerModel:FindFirstChild("Body")
+        if body and body:IsA("MeshPart") then
+            body.TextureID = bodyTextureId
+        end
+
+        -- Cambiar mesh de 'Mic' y ajustar la transparencia
+        local mic = playerModel:FindFirstChild("Mic")
+        if mic and mic:IsA("MeshPart") then
+            mic.MeshId = micMeshId
+            -- Cambiar transparencia del Mic a 1 (totalmente transparente)
+            mic.Transparency = 1
+        end
+
+        -- Cambiar textura de 'Head'
+        local head = playerModel:FindFirstChild("Head")
+        if head and head:IsA("MeshPart") then
+            head.TextureID = headTextureId
+        end
+    end
+end
+    end,
+})
+
+local Button = Trolling:Button({
+    Title = "Preppy Cosmo",
+    Desc = "Makes you preppy",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+
+-- Verificamos si la carpeta "InGamePlayers" existe en Workspace
+local inGamePlayersFolder = workspace:FindFirstChild("InGamePlayers")
+if inGamePlayersFolder then
+    -- Buscamos un modelo con el mismo nombre que el jugador
+    local playerModel = inGamePlayersFolder:FindFirstChild(player.Name)
+    if playerModel then
+        -- Iteramos a través de los hijos del modelo para encontrar MeshParts
+        for _, part in ipairs(playerModel:GetDescendants()) do
+            if part:IsA("MeshPart") and part.TextureID then
+                -- Cambiamos la textura según el nombre de la parte
+                if part.Name == "LegL" or part.Name == "LegR" or part.Name == "LegL2" or part.Name == "LegR2" then
+                    part.TextureID = "rbxassetid://107645736113072"
+                elseif part.Name == "ArmL" or part.Name == "ArmL2" or part.Name == "ArmR" or part.Name == "ArmR2" then
+                    part.TextureID = "rbxassetid://107645736113072"
+                elseif part.Name == "HandL" or part.Name == "HandR" then
+                    part.TextureID = "rbxassetid://107645736113072"
+                elseif part.Name == "Head" then
+                    part.TextureID = "rbxassetid://107645736113072"
+                end
+            end
+        end
+    else
+        warn("No se encontró un modelo con el nombre del jugador.")
+    end
+else
+    warn("No se encontró la carpeta 'InGamePlayers' en Workspace.")
+end
+    end,
+})
+
+local Button = Trolling:Button({
+    Title = "Preppy Sprout",
+    Desc = "Same thing as Cosmo",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+
+-- Verificamos si la carpeta "InGamePlayers" existe en Workspace
+local inGamePlayersFolder = workspace:FindFirstChild("InGamePlayers")
+if inGamePlayersFolder then
+    -- Buscamos un modelo con el mismo nombre que el jugador
+    local playerModel = inGamePlayersFolder:FindFirstChild(player.Name)
+    if playerModel then
+        -- Iteramos a través de los hijos del modelo para encontrar MeshParts
+        for _, part in ipairs(playerModel:GetDescendants()) do
+            if part:IsA("MeshPart") and part.TextureID then
+                -- Cambiamos la textura según el nombre de la parte
+                if part.Name == "ArmL" or part.Name == "ArmL2" or
+                   part.Name == "ArmR" or part.Name == "ArmR2" or
+                   part.Name == "Body" or
+                   part.Name == "HandL" or part.Name == "HandR" or
+                   part.Name == "LegL" or part.Name == "LegL2" or
+                   part.Name == "LegR" or part.Name == "LegR2" or
+                   part.Name == "Scarf1" or part.Name == "Scarf2" or
+                   part.Name == "Head" then
+                    part.TextureID = "rbxassetid://85431558188198"
+                end
+            end
+        end
+    else
+        warn("No se encontró un modelo con el nombre del jugador.")
+    end
+else
+    warn("No se encontró la carpeta 'InGamePlayers' en Workspace.")
+end
+    end,
+})
+
+local Button = Trolling:Button({
+    Title = "Preppy Vee",
+    Desc = "Same thing.",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+
+-- Verificamos si la carpeta "InGamePlayers" existe en Workspace
+local inGamePlayersFolder = workspace:FindFirstChild("InGamePlayers")
+if inGamePlayersFolder then
+    -- Buscamos un modelo con el mismo nombre que el jugador
+    local playerModel = inGamePlayersFolder:FindFirstChild(player.Name)
+    if playerModel then
+        -- Iteramos a través de los hijos del modelo para encontrar MeshParts
+        for _, part in ipairs(playerModel:GetDescendants()) do
+            if part:IsA("MeshPart") and part.TextureID then
+                -- Cambiamos la textura según el nombre de la parte
+                if part.Name == "ArmL" or part.Name == "ArmL2" or
+                   part.Name == "ArmR" or part.Name == "ArmR2" or
+                   part.Name == "Body" or part.Name == "Head" or
+                   part.Name == "Mic" or
+                   part.Name == "LegL" or part.Name == "LegL2" or
+                   part.Name == "LegR" or part.Name == "LegR2" or
+                   part.Name == "HandL" or part.Name == "HandR" then
+                    part.TextureID = "rbxassetid://92449473603556"
+                end
+            end
+        end
+    else
+        warn("No se encontró un modelo con el nombre del jugador.")
+    end
+else
+    warn("No se encontró la carpeta 'InGamePlayers' en Workspace.")
+end
+    end,
+})
+
+local Button = Trolling:Button({
+    Title = "Albino Sprout",
+    Desc = "Convert to albino sprout",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+
+-- Verificamos si la carpeta "InGamePlayers" existe en Workspace
+local inGamePlayersFolder = workspace:FindFirstChild("InGamePlayers")
+if inGamePlayersFolder then
+    -- Buscamos un modelo con el mismo nombre que el jugador
+    local playerModel = inGamePlayersFolder:FindFirstChild(player.Name)
+    if playerModel then
+        -- Iteramos a través de los hijos del modelo para encontrar MeshParts
+        for _, part in ipairs(playerModel:GetDescendants()) do
+            if part:IsA("MeshPart") and part.TextureID then
+                -- Cambiamos la textura según el nombre de la parte
+                if part.Name == "ArmL" or part.Name == "ArmL2" or
+                   part.Name == "ArmR" or part.Name == "ArmR2" or
+                   part.Name == "HandL" or part.Name == "HandR" or
+                   part.Name == "Body" or part.Name == "Scarf" or
+                   part.Name == "Head" or part.Name == "LegL" or
+                   part.Name == "LegL2" or part.Name == "LegR" or
+                   part.Name == "LegR2" then
+                    part.TextureID = "rbxassetid://91518543078578"
+                end
+            end
+        end
+    else
+        warn("No se encontró un modelo con el nombre del jugador.")
+    end
+else
+    warn("No se encontró la carpeta 'InGamePlayers' en Workspace.")
+end
+    end,
+})
+
+local Button = Trolling:Button({
+    Title = "Bald dandy Skin",
+    Desc = "Makes you bald",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+local playerName = player.Name
+local workspace = game:GetService("Workspace")
+
+-- Buscar la carpeta y el modelo del jugador
+local inGamePlayersFolder = workspace:FindFirstChild("InGamePlayers")
+if inGamePlayersFolder then
+    local playerModel = inGamePlayersFolder:FindFirstChild(playerName)
+    if playerModel then
+        -- Buscar y eliminar 'Hair' si existe
+        local hair = playerModel:FindFirstChild("Hair")
+        if hair and hair:IsA("MeshPart") then
+            hair:Destroy()
+        end
+    end
+end
+    end,
+})
+
+
+local Notification = WindUI:Notify({
+    Title = "🔔Notification🔔",
+    Content = "¡Hub Successfully loaded!",
+    Duration = 5,
+})
